@@ -30,6 +30,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'tracker.middleware.TokenVerification',
 ]
 
 ROOT_URLCONF = 'growth-tracker.urls'
@@ -76,7 +77,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTH_USER_MODEL = 'tracker.User'
+AUTH_USER_MODEL = 'tracker.DiscordUser'
 
 LANGUAGE_CODE = 'en-us'
 
