@@ -4,19 +4,19 @@ with open("README.md", "r", encoding="utf-8") as fh:
   long_description = fh.read()
 
 setuptools.setup(
-  name = "terminal-message",
+  name = "growth-tracker",
   version = "0.1.0",
   author = "Paul Serafimescu",
   author_email = "paulserafimescu@gmail.com",
-  description = "tool to automate backing up discord friends",
+  description = "see how a discord server changes over time idk",
   long_description = long_description,
   long_description_content_type = "text/markdown",
-  url = "https://github.com/PaulSera1/discord-friends-backup",
+  url = "https://github.com/PaulSera1/growth-tracker",
   classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
   ],
   packages = setuptools.find_packages(where = "."),
-  python_requires = ">=3.5",
+  python_requires = ">=3.8",
 )
