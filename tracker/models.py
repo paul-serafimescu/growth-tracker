@@ -21,6 +21,9 @@ class DiscordUser(AbstractUser):
   expiration = models.DateTimeField()
   refresh_token = models.CharField(max_length=100)
 
+  def __str__(self) -> str:
+    return self.username
+
   class Meta:
     ordering = ['username']
 

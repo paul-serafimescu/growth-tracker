@@ -22,6 +22,7 @@ class Login(View):
       'client_id': client_id,
       'scope': [
         'identify',
+        'guilds',
         'guilds.join',
       ],
       'redirect_uri': quote('http://localhost:8000/accounts/authenticated')
