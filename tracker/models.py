@@ -1,4 +1,5 @@
 from django.db import models
+from uuid import uuid4
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
 
@@ -27,12 +28,25 @@ class DiscordUser(AbstractUser):
   class Meta:
     ordering = ['username']
 
-class Server(models.Model):
+class Guild(models.Model):
   name = models.CharField(max_length=100)
-  user = models.ForeignKey(DiscordUser, on_delete=models.CASCADE)
+  guild_id = models.CharField(max_length=30)
+  icon = models.CharField(max_length=100)
+  permissions = models.CharField(max_length=30)
 
   def __str__(self) -> str:
     return self.name
 
   class Meta:
     ordering = ['name']
+
+class Snapshot(models.Model):
+  url = models.UUIDField(default=uuid4, editable=False)
+  guild = models.ForeignKey(Guild, on_delete=models.CASCADE)
+  date = models.DateTimeField(auto_now_add=True)
+
+  def __str__(self) -> str:
+    return f'<{self.__class__.__name__} {self.url} : {self.guild}>'
+
+  class Meta:
+    ordering = ['date']

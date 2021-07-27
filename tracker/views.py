@@ -1,9 +1,10 @@
+from django.http.response import JsonResponse
 from django.shortcuts import render
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.views import View
 from django.core.exceptions import ObjectDoesNotExist
 from api.guild import GuildManager
-from .models import Server
+from .models import Guild
 
 class Index(View):
   def get(self, request: HttpRequest) -> HttpResponse:
@@ -14,13 +15,7 @@ class Index(View):
 
 class ServerListView(View):
   def get(self, request: HttpRequest) -> HttpResponse:
-    servers = GuildManager(request.user.access_token).get_user_guilds()
-    return HttpResponse(servers)
-
-class ServerView(View):
-  def get(self, request: HttpRequest, server_name: str) -> HttpResponse:
-    try:
-      server: Server = Server.objects.all().filter(user=request.user).get(name=server_name)
-    except ObjectDoesNotExist:
-      server = "nope"
-    return HttpResponse(server)
+    context = {
+      'guilds': GuildManager(request.user.access_token).get_user_guilds(),
+    }
+    return render(request, 'guilds.html', context)
