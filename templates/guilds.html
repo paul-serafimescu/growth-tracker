@@ -2,7 +2,7 @@
 {% block content %}
 {% for guild in guilds %}
 <div class="container">
-  <p>{{ guild }}</p>
+  <p><a href="/servers/{{ guild.id }}">{{ guild.name }}</a></p>
 </div>
 {% endfor %}
 {% endblock %}

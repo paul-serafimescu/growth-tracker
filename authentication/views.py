@@ -1,5 +1,5 @@
 from tracker.models import DiscordUser
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.views import View
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.contrib.auth import login, logout, authenticate
@@ -74,20 +74,27 @@ class Authenticated(View):
       return redirect('/accounts/login/')
     parser = ResponseParser(self.fetch_token_json(code))
     user_info = self.fetch_user_info(
-      (token_type := parser.get_or_raise('token_type')),
+      token_type := 'BR' if parser.get_or_raise('token_type') else 'BA',
       (access_token := parser.get_or_raise('access_token'))
     )
     expiration = datetime.now() + timedelta(0, parser.get_or_raise('expires_in'))
     if (id := str(user_info.get('id'))) is None:
       raise InvalidResponseError()
-    while (user := authenticate(request, username=id, password=id)) is None:
+    refresh_token = parser.get_or_raise('refresh_token')
+    while (user := authenticate(request, username=id, password=id)) is None: # user does not exist
       DiscordUser.objects.create_user(
         username=id,
         password=id,
         access_token=access_token,
-        token_type='BR' if token_type == 'Bearer' else 'BA',
+        token_type=token_type,
         expiration=expiration,
-        refresh_token=parser.get_or_raise('refresh_token')
+        refresh_token=refresh_token
       )
+    else: # user exists already, update token info
+      user = authenticate(request, username=id, password=id)
+      user.access_token = access_token
+      user.refresh_token = refresh_token
+      user.expiration = expiration
+      user.token_type = token_type
     login(request, user)
     return redirect('/')
