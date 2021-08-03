@@ -1,11 +1,16 @@
 PYTHON := python3
 
+SHELL := /bin/bash
+
 MANAGE := $(PYTHON) manage.py
 
 SUBDIR_ROOTS := tests growth-tracker tracker
 DIRS := . $(shell find $(SUBDIR_ROOTS) -type d)
-GARBAGE_PATTERNS := __pycache__ db.sqlite3
+GARBAGE_PATTERNS := __pycache__ db.sqlite3 migrations
 GARBAGE := $(foreach DIR,$(DIRS),$(addprefix $(DIR)/,$(GARBAGE_PATTERNS)))
+
+MODEL_MODULES := tracker
+MIGRATION_DIR := migrations
 
 .PHONY := help discord-bot setup test run clean migrations all
 
@@ -24,10 +29,11 @@ setup:
 test:
 	$(PYTHON) -m unittest discover -vs tests
 
-run:
+run: migrations
 	$(MANAGE) runserver
 
 migrations:
+	$(foreach MODULE,$(MODEL_MODULES),$(shell mkdir $(MODULE)/$(MIGRATION_DIR) && touch $(MODULE)/$(MIGRATION_DIR)/__init__.py))
 	$(MANAGE) makemigrations && $(MANAGE) migrate
 
 discord-bot:
@@ -36,4 +42,4 @@ discord-bot:
 all: discord-bot run
 
 clean:
-	rm -rf $(GARBAGE)
+	rm -vrf $(GARBAGE)
