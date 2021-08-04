@@ -4,10 +4,12 @@ SHELL := /bin/bash
 
 MANAGE := $(PYTHON) manage.py
 
-SUBDIR_ROOTS := tests growth-tracker tracker
+SUBDIR_ROOTS := tests growth-tracker tracker authentication api
 DIRS := . $(shell find $(SUBDIR_ROOTS) -type d)
 GARBAGE_PATTERNS := __pycache__ db.sqlite3 migrations
 GARBAGE := $(foreach DIR,$(DIRS),$(addprefix $(DIR)/,$(GARBAGE_PATTERNS)))
+
+NO_MIGRATIONS := No changes detected
 
 MODEL_MODULES := tracker
 MIGRATION_DIR := migrations
@@ -27,13 +29,13 @@ setup:
 	$(PYTHON) -m pip install -r requirements.txt
 
 test:
-	$(PYTHON) -m unittest discover -vs tests
+	$(MANAGE) test -v 2
 
 run: migrations
 	$(MANAGE) runserver
 
 migrations:
-	$(foreach MODULE,$(MODEL_MODULES),$(shell mkdir $(MODULE)/$(MIGRATION_DIR) && touch $(MODULE)/$(MIGRATION_DIR)/__init__.py))
+	$(foreach MODULE,$(MODEL_MODULES),$(shell mkdir -p $(MODULE)/$(MIGRATION_DIR) && touch $(MODULE)/$(MIGRATION_DIR)/__init__.py))
 	$(MANAGE) makemigrations && $(MANAGE) migrate
 
 discord-bot:

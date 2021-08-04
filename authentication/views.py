@@ -1,15 +1,15 @@
-from tracker.models import DiscordUser
 from django.shortcuts import redirect
 from django.views import View
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.contrib.auth import login, logout, authenticate
+from django.utils import timezone
+from tracker.models import DiscordUser
 from config.environment import DISCORD_OAUTH_ROOT, DISCORD_API_ROOT, ENV
 from config.exceptions import EnvKeyNotFoundError
 from requests import post, get
 from urllib.parse import quote
 from typing import Union, Any
 from .util import ResponseParser, InvalidResponseError
-from datetime import datetime, timedelta
 
 class Login(View):
   def get(self, request: HttpRequest) -> HttpResponseRedirect:
@@ -77,7 +77,7 @@ class Authenticated(View):
       token_type := 'BR' if parser.get_or_raise('token_type') else 'BA',
       (access_token := parser.get_or_raise('access_token'))
     )
-    expiration = datetime.now() + timedelta(0, parser.get_or_raise('expires_in'))
+    expiration = timezone.now() + timezone.timedelta(0, parser.get_or_raise('expires_in'))
     if (id := str(user_info.get('id'))) is None:
       raise InvalidResponseError()
     refresh_token = parser.get_or_raise('refresh_token')

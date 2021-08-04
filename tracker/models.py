@@ -1,3 +1,4 @@
+from __future__ import annotations
 from django.db import models
 from uuid import uuid4
 from django.contrib.auth.models import AbstractUser
@@ -25,17 +26,25 @@ class DiscordUser(AbstractUser):
   def __str__(self) -> str:
     return self.username
 
+  @staticmethod
+  def create_user(*args, **kwargs) -> DiscordUser:
+    return DiscordUser.objects.create(**kwargs)
+
   class Meta:
     ordering = ['username']
 
 class Guild(models.Model):
   name = models.CharField(max_length=100)
-  guild_id = models.CharField(max_length=30)
+  guild_id = models.CharField(max_length=30, unique=True)
   icon = models.CharField(max_length=100)
   permissions = models.CharField(max_length=30)
 
   def __str__(self) -> str:
     return self.name
+
+  @staticmethod
+  def create_guild(*args, **kwargs) -> Guild:
+    return Guild.objects.create(**kwargs)
 
   class Meta:
     ordering = ['name']
