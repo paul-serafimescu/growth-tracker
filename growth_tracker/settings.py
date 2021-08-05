@@ -1,4 +1,3 @@
-from pathlib import Path
 from config.environment import BASE_PATH as BASE_DIR, ENV
 from config.exceptions import EnvKeyNotFoundError
 
@@ -33,7 +32,7 @@ MIDDLEWARE = [
     'tracker.middleware.TokenVerification',
 ]
 
-ROOT_URLCONF = 'growth-tracker.urls'
+ROOT_URLCONF = 'growth_tracker.urls'
 
 TEMPLATES = [
     {
@@ -53,7 +52,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'growth-tracker.wsgi.application'
+WSGI_APPLICATION = 'growth_tracker.wsgi.application'
 
 DATABASES = {
     'default': {

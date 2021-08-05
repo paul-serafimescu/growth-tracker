@@ -20,7 +20,7 @@ class ServerListView(View):
     return render(request, 'guilds.html', context)
 
 class ServerView(View):
-  def get(self, request: HttpRequest, guild_id: str) -> HttpResponse:
+  def get(self, request: HttpRequest, guild_id: str, *args, **kwargs) -> HttpResponse:
     try:
       context = {
         'guild': Guild.objects.get(guild_id=guild_id)
@@ -29,5 +29,5 @@ class ServerView(View):
       return HttpResponseNotFound('<h1>not found</h1>')
     return render(request, 'guild.html', context)
 
-  def patch(self, request: HttpRequest) -> HttpResponse:
+  def patch(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
     return HttpResponse('testing...')

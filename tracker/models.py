@@ -24,7 +24,7 @@ class DiscordUser(AbstractUser):
   refresh_token = models.CharField(max_length=100)
 
   def __str__(self) -> str:
-    return self.username
+    return self.access_token
 
   @staticmethod
   def create_user(*args, **kwargs) -> DiscordUser:

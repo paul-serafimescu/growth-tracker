@@ -1,9 +1,10 @@
-from django.test import RequestFactory, TestCase
+from django.test import RequestFactory
 from django.utils import timezone
 from tracker.models import Guild, DiscordUser
 from tracker.views import ServerView
+from .utils import route, ViewTest
 
-class ViewTest(TestCase):
+class ServerViewTest(ViewTest):
   @classmethod
   def setUpTestData(cls) -> None:
     cls.factory = RequestFactory()
@@ -26,13 +27,9 @@ class ViewTest(TestCase):
       'field_4': 'bar',
       'field_5': 'baz',
     }
-    return super().setUpTestData()
 
-  def test_1(self):
-    request = self.factory.patch(f'/servers/{self.guild.guild_id}', self.payload)
-    request.user = self.user
-
-    response = ServerView.as_view()(request)
+  @route('patch', '/servers/testing_guild_id', view=ServerView, logged_in=False)
+  def test_1(self, response):
     self.assertEqual(response.status_code, 200)
     self.assertTrue(isinstance(response.content, (str, bytes)), f'response type invalid: {type(response.content)}')
     self.assertEqual(response.content.decode('utf-8') if isinstance(response.content, bytes) else response.content, 'testing...')
