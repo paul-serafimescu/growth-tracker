@@ -1,4 +1,4 @@
-from . import settings
+from . import *
 
 if __name__ == '__main__':
-  pass
+  GrowthTracker().run_bot()

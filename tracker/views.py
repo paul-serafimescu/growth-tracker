@@ -3,14 +3,15 @@ from django.http import HttpRequest, HttpResponse, HttpResponseNotFound
 from django.views import View
 from django.core.exceptions import ObjectDoesNotExist
 from api.guild import GuildManager
+from .middleware import protected_route
 from .models import Guild
 
 class Index(View):
-  def get(self, request: HttpRequest) -> HttpResponse:
+  def get(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
    return render(request, 'home.html', {})
 
 class ServerListView(View):
-  def get(self, request: HttpRequest) -> HttpResponse:
+  def get(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
     context = {
       'guilds': (guilds := GuildManager(request.user.access_token).get_user_guilds()),
     }
@@ -29,5 +30,10 @@ class ServerView(View):
       return HttpResponseNotFound('<h1>not found</h1>')
     return render(request, 'guild.html', context)
 
-  def patch(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
-    return HttpResponse('testing...')
+  @protected_route
+  def patch(self, request: HttpRequest, guild_id: str, *args, **kwargs) -> HttpResponse:
+    guild: Guild = Guild.objects.get(guild_id=guild_id)
+    if guild.members is None:
+      return HttpResponse(status=200)
+    guild.increment_member_count()
+    return HttpResponse(status=200)

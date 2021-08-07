@@ -18,13 +18,13 @@ class DiscordUser(AbstractUser):
   token_type = models.CharField(
     max_length=2,
     choices=TokenType.choices,
-    default=TokenType.BEARER
+    default=TokenType.BEARER,
   )
   expiration = models.DateTimeField()
   refresh_token = models.CharField(max_length=100)
 
   def __str__(self) -> str:
-    return self.access_token
+    return self.username
 
   @staticmethod
   def create_user(*args, **kwargs) -> DiscordUser:
@@ -38,6 +38,7 @@ class Guild(models.Model):
   guild_id = models.CharField(max_length=30, unique=True)
   icon = models.CharField(max_length=100)
   permissions = models.CharField(max_length=30)
+  members = models.IntegerField(null=True)
 
   def __str__(self) -> str:
     return self.name
@@ -45,6 +46,10 @@ class Guild(models.Model):
   @staticmethod
   def create_guild(*args, **kwargs) -> Guild:
     return Guild.objects.create(**kwargs)
+
+  def increment_member_count(self) -> None:
+    self.members += 1
+    self.save()
 
   class Meta:
     ordering = ['name']

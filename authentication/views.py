@@ -24,6 +24,7 @@ class Login(View):
         'identify',
         'guilds',
         'guilds.join',
+        'email',
       ],
       'redirect_uri': quote('http://localhost:8000/accounts/authenticated')
     }
@@ -64,8 +65,12 @@ class Authenticated(View):
     return post(DISCORD_OAUTH_ROOT + 'token', data=data, headers=headers).json()
 
   def fetch_user_info(self, token_type: str, token: str) -> dict[str, Any]:
+    if token_type == 'BR':
+      _token_type = 'Bearer'
+    else:
+      _token_type = 'Basic'
     headers = {
-      'Authorization': f'{token_type} {token}'
+      'Authorization': f'{_token_type} {token}'
     }
     return get(DISCORD_API_ROOT + 'users/@me', headers=headers).json()
 
@@ -78,20 +83,22 @@ class Authenticated(View):
       (access_token := parser.get_or_raise('access_token'))
     )
     expiration = timezone.now() + timezone.timedelta(0, parser.get_or_raise('expires_in'))
-    if (id := str(user_info.get('id'))) is None:
+    if (id := user_info.get('id')) is None:
       raise InvalidResponseError()
+    if (username := user_info.get('username')) is None:
+      raise InvalidResponseError
     refresh_token = parser.get_or_raise('refresh_token')
-    while (user := authenticate(request, username=id, password=id)) is None: # user does not exist
+    while (user := authenticate(request, username=f'{username} <{id}>', password=id)) is None: # user does not exist
       DiscordUser.objects.create_user(
-        username=id,
-        password=id,
+        username=f'{username} <{id}>',
+        password=str(id),
         access_token=access_token,
         token_type=token_type,
         expiration=expiration,
         refresh_token=refresh_token
       )
     else: # user exists already, update token info
-      user = authenticate(request, username=id, password=id)
+      user = authenticate(request, username=f'{username} <{id}>', password=str(id))
       user.access_token = access_token
       user.refresh_token = refresh_token
       user.expiration = expiration

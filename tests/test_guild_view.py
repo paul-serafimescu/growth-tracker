@@ -2,7 +2,16 @@ from django.test import RequestFactory
 from django.utils import timezone
 from tracker.models import Guild, DiscordUser
 from tracker.views import ServerView
+from config.environment import BOT_CLIENT_TOKEN
 from .utils import route, ViewTest
+
+PAYLOAD = {
+  'field_1': 'foo',
+  'field_2': True,
+  'field_3': 98.3,
+  'field_4': 'bar',
+  'field_5': 'baz',
+}
 
 class ServerViewTest(ViewTest):
   @classmethod
@@ -18,18 +27,12 @@ class ServerViewTest(ViewTest):
       name='My Server',
       guild_id='testing_guild_id',
       icon='dtfcygvuhjbkk',
-      permissions='1234567890'
+      permissions='1234567890',
+      members=None
     )
-    cls.payload = {
-      'field_1': 'foo',
-      'field_2': True,
-      'field_3': 98.3,
-      'field_4': 'bar',
-      'field_5': 'baz',
-    }
+    cls.payload = PAYLOAD
 
-  @route('patch', '/servers/testing_guild_id', view=ServerView, logged_in=False)
+  @route('patch', '/servers/testing_guild_id', view=ServerView, headers={ 'Authorization': BOT_CLIENT_TOKEN }, data=PAYLOAD, logged_in=True)
   def test_1(self, response):
     self.assertEqual(response.status_code, 200)
     self.assertTrue(isinstance(response.content, (str, bytes)), f'response type invalid: {type(response.content)}')
-    self.assertEqual(response.content.decode('utf-8') if isinstance(response.content, bytes) else response.content, 'testing...')
