@@ -87,11 +87,14 @@ class Authenticated(View):
       raise InvalidResponseError()
     if (username := user_info.get('username')) is None:
       raise InvalidResponseError
+    if (email := user_info.get('email')) is None:
+      raise InvalidResponseError()
     refresh_token = parser.get_or_raise('refresh_token')
     while (user := authenticate(request, username=f'{username} <{id}>', password=id)) is None: # user does not exist
       DiscordUser.objects.create_user(
         username=f'{username} <{id}>',
         password=str(id),
+        email=email,
         access_token=access_token,
         token_type=token_type,
         expiration=expiration,
@@ -103,5 +106,6 @@ class Authenticated(View):
       user.refresh_token = refresh_token
       user.expiration = expiration
       user.token_type = token_type
+      user.email = email
     login(request, user)
     return redirect('/')

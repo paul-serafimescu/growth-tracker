@@ -3,8 +3,9 @@ from django.http import HttpRequest, HttpResponse, HttpResponseNotFound
 from django.views import View
 from django.core.exceptions import ObjectDoesNotExist
 from api.guild import GuildManager
+from uuid import uuid4, UUID
 from .middleware import protected_route
-from .models import Guild
+from .models import Guild, Snapshot
 
 class Index(View):
   def get(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
@@ -26,6 +27,7 @@ class ServerView(View):
       context = {
         'guild': Guild.objects.get(guild_id=guild_id)
       }
+    # TODO: create Snapshot if one doesn't exist for today
     except ObjectDoesNotExist:
       return HttpResponseNotFound('<h1>not found</h1>')
     return render(request, 'guild.html', context)
@@ -37,3 +39,12 @@ class ServerView(View):
       return HttpResponse(status=200)
     guild.increment_member_count()
     return HttpResponse(status=200)
+
+  @protected_route
+  def post(self, request: HttpRequest, guild_id: str, *args, **kwargs) -> HttpResponse:
+    # TODO: Snapshot creation protocol (only the bot can trigger a creation from this route)
+    ...
+
+class SnapShotView(View):
+  def get(self, request: HttpRequest, ss_uuid: str, *args, **kwargs) -> HttpResponse:
+    return HttpResponse(Snapshot.objects.get(url=ss_uuid).date)

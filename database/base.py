@@ -1,9 +1,11 @@
 from asgiref.sync import sync_to_async
 from .exceptions import ConnectionError
 from config.environment import BASE_PATH
+from typing import Union
 
 import os
 import django
+import discord
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'growth_tracker.settings')
 django.setup()
@@ -28,6 +30,10 @@ class Database(metaclass=DatabaseMeta):
     Database._instances = 1
 
   @sync_to_async
+  def convert_guild_objects(self, guilds: discord.Guild) -> list[Guild]:
+    return list(Guild.objects.filter(guild_id__in=[str(guild.id) for guild in guilds]))
+
+  @sync_to_async
   def fetch_all_guilds(self) -> list[Guild]:
     return list(Guild.objects.all())
 
@@ -36,5 +42,16 @@ class Database(metaclass=DatabaseMeta):
     return list(Snapshot.objects.filter(guild=guild))
 
   @sync_to_async
-  def fetch_guild(self, **kwargs) -> Guild:
-    return Guild.objects.get(**kwargs)
+  def fetch_guild(self, **kwargs) -> Union[Guild, None]:
+    try:
+      return Guild.objects.get(**kwargs)
+    except:
+      return None
+
+  @sync_to_async
+  def add_guild_member(self, guild_id: str) -> int:
+    return Guild.objects.get(guild_id=guild_id).increment_member_count()
+
+  @sync_to_async
+  def remove_guild_member(self, guild_id: str) -> int:
+    return Guild.objects.get(guild_id=guild_id).decrement_member_count()

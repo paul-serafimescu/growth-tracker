@@ -6,4 +6,5 @@ urlpatterns = [
     path('', login_required(views.Index.as_view()), name='index'),
     path('servers', login_required(views.ServerListView.as_view()), name='server-list'),
     path('servers/<str:guild_id>', login_required(views.ServerView.as_view()), name='server'),
+    path('<uuid:ss_uuid>', views.SnapShotView.as_view(), name='snapshot'),
 ]

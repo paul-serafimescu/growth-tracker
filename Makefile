@@ -14,7 +14,7 @@ NO_MIGRATIONS := No changes detected
 MODEL_MODULES := tracker
 MIGRATION_DIR := migrations
 
-.PHONY := help discord-bot setup test run clean migrations all
+.PHONY := help bot migrations test
 
 .DEFAULT_GOAL := help
 
@@ -38,10 +38,8 @@ migrations:
 	$(foreach MODULE,$(MODEL_MODULES),$(shell mkdir -p $(MODULE)/$(MIGRATION_DIR) && touch $(MODULE)/$(MIGRATION_DIR)/__init__.py))
 	$(MANAGE) makemigrations && $(MANAGE) migrate
 
-discord-bot:
+bot:
 	$(PYTHON) -m bot
-
-all: discord-bot run
 
 clean:
 	rm -vrf $(GARBAGE)
