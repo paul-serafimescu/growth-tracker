@@ -2,6 +2,7 @@ import discord
 from database import Database
 from database.base import Guild
 from config.environment import ENV
+from asgiref.sync import sync_to_async
 from typing import Union
 
 class GrowthTracker(discord.Client):

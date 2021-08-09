@@ -7,3 +7,4 @@ discord==1.7.3
 aiohttp==3.7.4.post0
 python-dotenv==0.18.0
 apscheduler==3.7.0
+aenum==3.1.0

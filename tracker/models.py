@@ -51,11 +51,13 @@ class Guild(models.Model):
   def increment_member_count(self) -> int:
     self.members += 1
     self.save()
+    Snapshot.objects.create(guild=self, member_count=self.members)
     return self.members
 
   def decrement_member_count(self) -> int:
     self.members -= 1
     self.save()
+    Snapshot.objects.create(guild=self, member_count=self.members)
     return self.members
 
   @sync_to_async
@@ -69,6 +71,7 @@ class Snapshot(models.Model):
   url = models.UUIDField(default=uuid4, editable=False)
   guild = models.ForeignKey(Guild, on_delete=models.CASCADE)
   date = models.DateTimeField(auto_now_add=True)
+  member_count = models.IntegerField()
 
   def __str__(self) -> str:
     return f'<{self.__class__.__name__} {self.url} : {self.guild}>'

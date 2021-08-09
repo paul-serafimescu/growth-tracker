@@ -1,4 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
-<p>{{ guild.name }}</p>
+<h1>{{ guild.name }}</h1>
+{% for day, snapshot_list in snapshots.items %}
+  <h2>{{ day }}</h2>
+  {% if snapshot_list %}
+    {% for snapshot in snapshot_list %}
+      <p>{{ snapshot.member_count }}</p>
+    {% endfor %}
+  {% else %}
+    <p>nothing for today!</p>
+  {% endif %}
+{% endfor %}
 {% endblock %}

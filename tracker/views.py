@@ -2,10 +2,26 @@ from django.shortcuts import render
 from django.http import HttpRequest, HttpResponse, HttpResponseNotFound
 from django.views import View
 from django.core.exceptions import ObjectDoesNotExist
+from django.utils import timezone
+from datetime import datetime
 from api.guild import GuildManager
 from uuid import uuid4, UUID
 from .middleware import protected_route
 from .models import Guild, Snapshot
+
+class WeekDaysMeta(type):
+  def __new__(cls, *args, **kwargs) -> type:
+    instance = super().__new__(cls, *args, **kwargs)
+    instance.days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    return instance
+
+class WeekDays(metaclass=WeekDaysMeta):
+  def __init__(self, value: int) -> None:
+    assert -1 < value < 7 and isinstance(value, int)
+    self._value_ = value
+
+  def __str__(self) -> str:
+    return self.__class__.days[self._value_]
 
 class Index(View):
   def get(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
@@ -24,17 +40,26 @@ class ServerListView(View):
 class ServerView(View):
   def get(self, request: HttpRequest, guild_id: str, *args, **kwargs) -> HttpResponse:
     try:
+      guild = Guild.objects.get(guild_id=guild_id)
+      snapshots = \
+        {day:
+          [snapshot for snapshot in
+            Snapshot.objects.filter(guild__guild_id=guild_id, date__gte=timezone.now() - timezone.timedelta(days=30)) if str(WeekDays(snapshot.date.weekday())) == day]
+        for day in WeekDays.days}
       context = {
-        'guild': Guild.objects.get(guild_id=guild_id)
+        'guild': guild,
+        'snapshots': snapshots,
       }
-    # TODO: create Snapshot if one doesn't exist for today
     except ObjectDoesNotExist:
       return HttpResponseNotFound('<h1>not found</h1>')
     return render(request, 'guild.html', context)
 
   @protected_route
   def patch(self, request: HttpRequest, guild_id: str, *args, **kwargs) -> HttpResponse:
-    guild: Guild = Guild.objects.get(guild_id=guild_id)
+    try:
+      guild: Guild = Guild.objects.get(guild_id=guild_id)
+    except ObjectDoesNotExist:
+      return HttpResponse(status=404)
     if guild.members is None:
       return HttpResponse(status=200)
     guild.increment_member_count()
