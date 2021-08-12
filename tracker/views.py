@@ -1,9 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.http import HttpRequest, HttpResponse, HttpResponseNotFound
 from django.views import View
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
-from datetime import datetime
 from api.guild import GuildManager
 from uuid import uuid4, UUID
 from .middleware import protected_route
@@ -39,16 +38,18 @@ class ServerListView(View):
 
 class ServerView(View):
   def get(self, request: HttpRequest, guild_id: str, *args, **kwargs) -> HttpResponse:
+    def to_locale(snapshot: Snapshot) -> Snapshot:
+      snapshot.date = timezone.localtime(snapshot.date)
+      print(snapshot.date.tzinfo)
+      return snapshot
+
     try:
-      guild = Guild.objects.get(guild_id=guild_id)
-      snapshots = \
-        {day:
-          [snapshot for snapshot in
-            Snapshot.objects.filter(guild__guild_id=guild_id, date__gte=timezone.now() - timezone.timedelta(days=30)) if str(WeekDays(snapshot.date.weekday())) == day]
-        for day in WeekDays.days}
       context = {
-        'guild': guild,
-        'snapshots': snapshots,
+        'guild': Guild.objects.get(guild_id=guild_id),
+        'snapshots': {day:
+          [snapshot for snapshot in
+            list(map(to_locale, Snapshot.objects.filter(guild__guild_id=guild_id, date__gte=timezone.now() - timezone.timedelta(days=7)))) if str(WeekDays(snapshot.date.weekday())) == day]
+        for day in WeekDays.days},
       }
     except ObjectDoesNotExist:
       return HttpResponseNotFound('<h1>not found</h1>')
@@ -70,6 +71,13 @@ class ServerView(View):
     # TODO: Snapshot creation protocol (only the bot can trigger a creation from this route)
     ...
 
-class SnapShotView(View):
-  def get(self, request: HttpRequest, ss_uuid: str, *args, **kwargs) -> HttpResponse:
-    return HttpResponse(Snapshot.objects.get(url=ss_uuid).date)
+class GraphView(View):
+  pass
+"""
+  def get(self, request: HttpRequest, guild_id: str, *args, **kwargs) -> HttpResponse:
+    guild = get_object_or_404(Guild, guild_id=guild_id)
+    fig, axes = plt.subplots()
+    plt.plot(WeekDays.days, [0, 0, 0, 0, 0, 5, 8])
+    fig.savefig('test')
+    return HttpResponse(content_type='image/png')"""
+

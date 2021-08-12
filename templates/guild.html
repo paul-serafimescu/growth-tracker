@@ -5,7 +5,11 @@
   <h2>{{ day }}</h2>
   {% if snapshot_list %}
     {% for snapshot in snapshot_list %}
+      {% load tz %}
       <p>{{ snapshot.member_count }}</p>
+      {% localtime on %}
+      <p>{{ snapshot.date|localtime }}</p>
+      {% endlocaltime %}
     {% endfor %}
   {% else %}
     <p>nothing for today!</p>

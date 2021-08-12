@@ -1,8 +1,10 @@
 from __future__ import annotations
 from django.db import models
-from uuid import uuid4
+from uuid import uuid4 as uuid
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
+from config.environment import BASE_PATH
 from asgiref.sync import sync_to_async
 
 class DiscordUser(AbstractUser):
@@ -26,6 +28,9 @@ class DiscordUser(AbstractUser):
 
   def __str__(self) -> str:
     return self.username
+
+  def __repr__(self) -> str:
+    return self.__str__()
 
   @staticmethod
   def create_user(*args, **kwargs) -> DiscordUser:
@@ -68,13 +73,24 @@ class Guild(models.Model):
     ordering = ['name']
 
 class Snapshot(models.Model):
-  url = models.UUIDField(default=uuid4, editable=False)
   guild = models.ForeignKey(Guild, on_delete=models.CASCADE)
-  date = models.DateTimeField(auto_now_add=True)
+  date = models.DateTimeField(default=timezone.localtime)
   member_count = models.IntegerField()
 
   def __str__(self) -> str:
-    return f'<{self.__class__.__name__} {self.url} : {self.guild}>'
+    return f'<{self.__class__.__name__} : {self.guild}>'
+
+  class Meta:
+    ordering = ['date']
+
+class Graph(models.Model):
+  guild = models.ForeignKey(Guild, on_delete=models.CASCADE)
+  url = models.UUIDField(default=uuid, editable=False)
+  graph = models.FilePathField(path=BASE_PATH.joinpath('graphs').__str__())
+  date = models.DateTimeField(auto_now_add=True)
+
+  def __str__(self) -> str:
+    return f'<{self.__class__.__name__} : {self.guild}>'
 
   class Meta:
     ordering = ['date']

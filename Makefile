@@ -4,9 +4,9 @@ SHELL := /bin/bash
 
 MANAGE := $(PYTHON) manage.py
 
-SUBDIR_ROOTS := tests growth_tracker tracker authentication api
+SUBDIR_ROOTS := . tests growth_tracker tracker authentication api
 DIRS := . $(shell find $(SUBDIR_ROOTS) -type d)
-GARBAGE_PATTERNS := __pycache__ db.sqlite3 migrations
+GARBAGE_PATTERNS := __pycache__ db.sqlite3 migrations graphs
 GARBAGE := $(foreach DIR,$(DIRS),$(addprefix $(DIR)/,$(GARBAGE_PATTERNS)))
 
 NO_MIGRATIONS := No changes detected
@@ -32,6 +32,7 @@ test:
 	$(MANAGE) test -v 2
 
 run: migrations
+	$(shell mkdir -p graphs)
 	$(MANAGE) runserver
 
 migrations:
