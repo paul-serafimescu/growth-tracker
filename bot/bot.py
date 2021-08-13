@@ -2,13 +2,13 @@ import discord
 from database import Database
 from database.base import Guild
 from config.environment import ENV
-from asgiref.sync import sync_to_async
 from typing import Union
 
 class GrowthTracker(discord.Client):
   def __init__(self):
     self.database = Database()
-    return super().__init__(intents=discord.Intents.all())
+    super().__init__(intents=discord.Intents.all())
+    return self.run()
 
   def __corresponding_discord_guild(self, guild_id: str) -> Union[discord.Guild, None]:
     for guild in self.guilds:
@@ -43,6 +43,5 @@ class GrowthTracker(discord.Client):
   async def on_member_remove(self, member: discord.Member) -> None:
     await self.database.remove_guild_member(str(member.guild.id))
 
-  def run_bot(self) -> None:
-    self.run(ENV.get('BOT_TOKEN'))
-
+  def run(self) -> None:
+    super().run(ENV.get('BOT_TOKEN'))

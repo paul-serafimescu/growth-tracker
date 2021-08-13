@@ -130,3 +130,6 @@ dmypy.json
 
 # Django migrations
 migrations/
+
+# Project-specific
+graphs/

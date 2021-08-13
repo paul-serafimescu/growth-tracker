@@ -1,0 +1,69 @@
+{
+  "name": "growth-tracker-frontend",
+  "version": "1.0.0",
+  "description": "react frontend for growth tracker bot",
+  "scripts": {
+    "lint": "npm run lint:styles; npm run lint:scripts",
+    "lint:styles": "stylelint src",
+    "lint:scripts": "eslint src",
+    "build": "cross-env NODE_ENV=production webpack --config webpack/webpack.config.prod.js",
+    "start": "webpack --watch --config webpack/webpack.config.dev.js"
+  },
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paul-serafimescu/growth-tracker"
+  },
+  "keywords": [
+    "webpack",
+    "startkit",
+    "frontend",
+    "es6",
+    "javascript",
+    "webdev"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.15.0",
+    "@babel/plugin-proposal-class-properties": "^7.14.5",
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+    "@babel/preset-env": "^7.15.0",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.2.2",
+    "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^9.0.1",
+    "cross-env": "^7.0.3",
+    "css-loader": "^6.2.0",
+    "eslint": "^7.32.0",
+    "eslint-webpack-plugin": "^3.0.1",
+    "file-loader": "^6.2.0",
+    "html-loader": "^2.1.2",
+    "html-webpack-plugin": "^5.3.2",
+    "mini-css-extract-plugin": "^2.2.0",
+    "node-sass": "^6.0.1",
+    "postcss-loader": "^6.1.1",
+    "postcss-preset-env": "^6.7.0",
+    "sass-loader": "^12.1.0",
+    "style-loader": "^3.2.1",
+    "stylelint": "^13.13.1",
+    "stylelint-config-standard": "^22.0.0",
+    "stylelint-webpack-plugin": "^3.0.1",
+    "webpack": "^5.50.0",
+    "webpack-cli": "^4.7.2",
+    "webpack-dev-server": "^3.11.2",
+    "webpack-merge": "^5.8.0"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.12.1",
+    "@types/react": "^17.0.17",
+    "@types/react-dom": "^17.0.9",
+    "bootstrap": "^5.1.0",
+    "core-js": "^3.16.1",
+    "d3": "^7.0.0",
+    "jquery": "^3.6.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "ts-loader": "^9.2.5",
+    "typescript": "^4.3.5"
+  }
+}

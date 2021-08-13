@@ -1,4 +1,4 @@
-from . import *
+from bot import GrowthTracker
 
 if __name__ == '__main__':
-  GrowthTracker().run_bot()
+  GrowthTracker()
