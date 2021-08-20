@@ -11,10 +11,11 @@
     {% endblock %}
   </head>
   <body>
+    <div id="navbar"></div>
     {% block content %}
     {% endblock %}
-    <div id="root"></div>
+    {% block js %}
+    {% endblock %}
     <script src="{% static 'js/vendors.js' %}"></script>
-    <script src="{% static 'js/app.js' %}"></script>
   </body>
 </html>

@@ -14,16 +14,18 @@ NO_MIGRATIONS := No changes detected
 MODEL_MODULES := tracker
 MIGRATION_DIR := migrations
 
-.PHONY := help bot migrations test
+.PHONY := help bot migrations test frontend
 
 .DEFAULT_GOAL := help
 
 help:
-	@echo "---------------HELP-----------------"
+	@echo "-------------------HELP---------------------"
 	@echo "To setup the project run 'make setup'"
 	@echo "To test the project run 'make test'"
-	@echo "To run the project run 'make run'"
-	@echo "------------------------------------"
+	@echo "To run the django backend run 'make run'"
+	@echo "To compile the frontend run 'make frontend'"
+	@echo "To run the discord bot run 'make bot'"
+	@echo "--------------------------------------------"
 
 setup:
 	$(PYTHON) -m pip install -r requirements.txt
@@ -41,6 +43,9 @@ migrations:
 
 bot:
 	$(PYTHON) -m bot
+
+frontend:
+	cd frontend && npm run start
 
 clean:
 	rm -vrf $(GARBAGE)

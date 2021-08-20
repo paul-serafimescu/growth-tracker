@@ -1,18 +1,12 @@
 {% extends "base.html" %}
+
+{% load static %}
+
 {% block content %}
-<h1>{{ guild.name }}</h1>
-{% for day, snapshot_list in snapshots.items %}
-  <h2>{{ day }}</h2>
-  {% if snapshot_list %}
-    {% for snapshot in snapshot_list %}
-      {% load tz %}
-      <p>{{ snapshot.member_count }}</p>
-      {% localtime on %}
-      <p>{{ snapshot.date|localtime }}</p>
-      {% endlocaltime %}
-    {% endfor %}
-  {% else %}
-    <p>nothing for today!</p>
-  {% endif %}
-{% endfor %}
+<div id="guild-main"></div>
+{% endblock %}
+
+{% block js %}
+{{ guild_dict|json_script:"guild" }}
+<script src="{% static 'js/guild.js' %}"></script>
 {% endblock %}

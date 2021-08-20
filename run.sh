@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-make -Bj 2 bot run
+make -Bj 3 bot run frontend

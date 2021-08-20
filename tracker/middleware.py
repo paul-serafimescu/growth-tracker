@@ -4,7 +4,7 @@ from django.shortcuts import redirect
 from django.contrib.auth import logout
 from django.utils import timezone
 from django.views import View
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, AnonymousUser
 from config.environment import BOT_CLIENT_TOKEN
 from api.refresh import Refresh, ResponseError
 from typing import Callable, Union
@@ -14,6 +14,8 @@ class TokenVerification:
     self.get_response = get_response
 
   def __call__(self, request: HttpRequest) -> HttpResponse:
+    if isinstance(request.user, AnonymousUser):
+      return self.get_response(request)
     if isinstance(request.user, AbstractUser):
       if timezone.now() >= request.user.expiration:
         try:
@@ -25,7 +27,7 @@ class TokenVerification:
           request.user.save()
         except ResponseError:
           logout(request)
-          return redirect('/login')
+          return redirect('/accounts/login')
     return self.get_response(request)
 
 def protected_route(function: Callable[..., HttpResponse]) -> Union[Callable[..., HttpResponse], HttpResponse]:

@@ -107,5 +107,6 @@ class Authenticated(View):
       user.expiration = expiration
       user.token_type = token_type
       user.email = email
+      user.save()
     login(request, user)
     return redirect('/')

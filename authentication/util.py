@@ -16,3 +16,6 @@ class ResponseParser:
     if (value := self.data.get(key)) is None:
       raise InvalidResponseError()
     return value
+
+  def __str__(self) -> str:
+    return self.data.__str__()

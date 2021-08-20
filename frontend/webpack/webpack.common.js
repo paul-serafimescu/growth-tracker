@@ -5,7 +5,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: {
-    app: Path.resolve(__dirname, '../src/scripts/index.tsx'),
+    index: Path.resolve(__dirname, '../src/scripts/index.tsx'),
+    guild: Path.resolve(__dirname, '../src/scripts/guild.tsx'),
   },
   output: {
     path: Path.join(__dirname, '../build'),
@@ -28,6 +29,7 @@ module.exports = {
     alias: {
       '~': Path.resolve(__dirname, '../src'),
     },
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
   module: {
     rules: [
