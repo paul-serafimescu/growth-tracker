@@ -11,7 +11,8 @@ from typing import Any
 def serializable(cls: type):
   def serialize(self) -> dict[str, Any]:
     return {key: value for key, value in self.__dict__.items() if not key.startswith('_')}
-  setattr(cls, serialize.__name__, serialize)
+  if not hasattr(cls, serialize.__name__):
+    setattr(cls, serialize.__name__, serialize)
   return cls
 
 @serializable
@@ -43,6 +44,13 @@ class DiscordUser(AbstractUser):
   @staticmethod
   def create_user(*args, **kwargs) -> DiscordUser:
     return DiscordUser.objects.create(**kwargs)
+
+  def serialize(self) -> dict[str, Any]:
+    return {
+      'id': self.id,
+      'username': (split_username := self.username.split())[0],
+      'discord_id': split_username[1][1:-1]
+    }
 
   class Meta:
     ordering = ['username']

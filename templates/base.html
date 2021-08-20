@@ -1,5 +1,7 @@
 {% load static %}
 
+{% load serializers %}
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -16,6 +18,9 @@
     {% endblock %}
     {% block js %}
     {% endblock %}
+    {% if user.is_authenticated %}
+      {{ user|serialize|json_script:"user" }}
+    {% endif %}
     <script src="{% static 'js/vendors.js' %}"></script>
   </body>
 </html>

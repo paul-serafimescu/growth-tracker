@@ -1,12 +1,14 @@
 {% extends "base.html" %}
 
 {% load static %}
+{% load serializers %}
 
 {% block content %}
 <div id="guild-main"></div>
 {% endblock %}
 
 {% block js %}
-{{ guild_dict|json_script:"guild" }}
+{{ guild|serialize|json_script:"guild" }}
+{{ guilds|json_script:"guilds" }}
 <script src="{% static 'js/guild.js' %}"></script>
 {% endblock %}

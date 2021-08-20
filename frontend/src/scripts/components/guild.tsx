@@ -1,6 +1,9 @@
 import React, {
   FunctionComponent
 } from 'react';
+import {
+  Container, Col as Column, Row
+} from 'react-bootstrap';
 
 import {
   parse_object
@@ -11,7 +14,7 @@ export interface GuildProps {
   name: string,
 }
 
-export const _Guild: FunctionComponent<GuildProps> = ({id, name}: GuildProps) => {
+const _Guild: FunctionComponent<GuildProps> = ({id, name}: GuildProps) => {
   return (
     <>
       <h1>{id}</h1>
@@ -23,6 +26,15 @@ export const _Guild: FunctionComponent<GuildProps> = ({id, name}: GuildProps) =>
 export const Guild: FunctionComponent<{}> = () => {
   let _guild = parse_object<GuildProps>('guild');
   return (
-    <_Guild id={_guild.id} name={_guild.name} />
+    <Container>
+      <Row>
+        <Column>
+          <_Guild id={_guild.id} name={_guild.name} />
+        </Column>
+        <Column>
+          <h1>hi</h1>
+        </Column>
+      </Row>
+    </Container>
   );
 };

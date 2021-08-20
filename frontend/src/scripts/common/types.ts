@@ -6,3 +6,9 @@ export interface Guild {
   permissions: string;
   members: number | null;
 }
+
+export interface User {
+  id: number;
+  username: string;
+  discord_id: string;
+}

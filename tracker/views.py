@@ -45,8 +45,8 @@ class ServerView(View):
 
     try:
       context = {
-        'guild': (guild := Guild.objects.get(guild_id=guild_id)),
-        'guild_dict': guild.serialize(),
+        'guild': Guild.objects.get(guild_id=guild_id),
+        'guilds': GuildManager(request.user.access_token).get_user_guilds(),
         'snapshots': {day:
           [snapshot for snapshot in
             list(map(to_locale, Snapshot.objects.filter(guild__guild_id=guild_id, date__gte=timezone.now() - timezone.timedelta(days=7)))) if str(WeekDays(snapshot.date.weekday())) == day]
