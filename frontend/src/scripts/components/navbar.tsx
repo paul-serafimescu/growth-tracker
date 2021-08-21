@@ -19,22 +19,17 @@ export const NavBar: FunctionComponent<NavBarProps> = ({user, logged_in, guilds}
     <Container>
       <Navbar className="navbar-main" collapseOnSelect fixed="top" expand="sm" bg="primary" variant="dark">
         <Container>
-          <Navbar.Brand href="#navbar">Growth Tracker</Navbar.Brand>
+          <Navbar.Brand href="/">Growth Tracker</Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav fill variant="pills" defaultActiveKey="/">
-              {[
-                'Test',
-                'Test Again',
-                'Test Once More',
-              ].map((navlink, idx) => (
-                <Nav.Link key={idx} className="navbar-item" href="https://google.com" target="_blank">{navlink}</Nav.Link>
-              ))}
-              <NavDropdown title="See Guilds" id="navbarScrollingDropdown">
+              <Nav.Link className="navbar-item" href="/servers">Guild List</Nav.Link>
+              <NavDropdown title="Quick Access" id="navbarScrollingDropdown">
                 {guilds.map((guild, idx) => (
-                  <NavDropdown.Item key={idx} href="#action">{guild.name}</NavDropdown.Item>
+                  <NavDropdown.Item key={idx} href={`/servers/${guild.guild_id}`}>{guild.name}</NavDropdown.Item>
                 ))}
               </NavDropdown>
+              <Nav.Link className="navbar-item" href="/accounts/logout">Logout</Nav.Link>
             </Nav>
           </Navbar.Collapse>
           <Navbar.Collapse className="justify-content-end">
@@ -48,3 +43,5 @@ export const NavBar: FunctionComponent<NavBarProps> = ({user, logged_in, guilds}
     </Container>
   );
 };
+
+export default NavBar;

@@ -3,8 +3,6 @@ from django.http import HttpRequest, HttpResponse, HttpResponseNotFound
 from django.views import View
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
-from api.guild import GuildManager
-from uuid import uuid4, UUID
 from .middleware import protected_route
 from .models import Guild, Snapshot
 
@@ -24,29 +22,28 @@ class WeekDays(metaclass=WeekDaysMeta):
 
 class Index(View):
   def get(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
-   return render(request, 'home.html', {})
+    context = {
+      'guilds': list(request.user.guild_set.all()),
+    }
+    return render(request, 'home.html', context)
 
 class ServerListView(View):
   def get(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
     context = {
-      'guilds': (guilds := GuildManager(request.user.access_token).get_user_guilds()),
+      'guilds': list(request.user.guild_set.all()),
     }
-    for guild in guilds:
-      if guild['id'] not in [guild.guild_id for guild in Guild.objects.filter(guild_id__in=[g['id'] for g in guilds])]:
-        Guild(name=guild['name'], guild_id=guild['id'], icon=guild['icon'], permissions=guild['permissions']).save()
     return render(request, 'guilds.html', context)
 
 class ServerView(View):
   def get(self, request: HttpRequest, guild_id: str, *args, **kwargs) -> HttpResponse:
     def to_locale(snapshot: Snapshot) -> Snapshot:
       snapshot.date = timezone.localtime(snapshot.date)
-      print(snapshot.date.tzinfo)
       return snapshot
 
     try:
       context = {
         'guild': Guild.objects.get(guild_id=guild_id),
-        'guilds': GuildManager(request.user.access_token).get_user_guilds(),
+        'guilds': list(request.user.guild_set.all()),
         'snapshots': {day:
           [snapshot for snapshot in
             list(map(to_locale, Snapshot.objects.filter(guild__guild_id=guild_id, date__gte=timezone.now() - timezone.timedelta(days=7)))) if str(WeekDays(snapshot.date.weekday())) == day]

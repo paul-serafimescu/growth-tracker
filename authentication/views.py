@@ -8,6 +8,8 @@ from config.environment import DISCORD_OAUTH_ROOT, DISCORD_API_ROOT, ENV
 from config.exceptions import EnvKeyNotFoundError
 from requests import post, get
 from urllib.parse import quote
+from api.guild import GuildManager
+from tracker.models import Guild
 from typing import Union, Any
 from .util import ResponseParser, InvalidResponseError
 
@@ -109,4 +111,7 @@ class Authenticated(View):
       user.email = email
       user.save()
     login(request, user)
+    for guild in GuildManager(request.user.access_token).get_user_guilds():
+      _guild, _ = Guild.objects.get_or_create(guild_id=guild['id'])
+      _guild.users.add(request.user)
     return redirect('/')

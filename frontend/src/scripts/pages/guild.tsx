@@ -1,9 +1,11 @@
+/* {DOMAIN}/servers/{guild_id} */
+
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 
-import "../styles/index.scss";
-import * as Components from './components';
-import { parse_object, User, Guild } from './common';
+import "../../styles/index.scss";
+import * as Components from '../components';
+import { parse_object, User, Guild } from '../common';
 
 /* context data */
 let session_user = parse_object<User>('user');

@@ -62,6 +62,7 @@ class Guild(models.Model):
   icon = models.CharField(max_length=100, null=True)
   permissions = models.CharField(max_length=30)
   members = models.IntegerField(null=True)
+  users = models.ManyToManyField(DiscordUser)
 
   def __str__(self) -> str:
     return self.name

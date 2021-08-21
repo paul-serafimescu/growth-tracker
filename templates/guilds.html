@@ -1,8 +1,13 @@
 {% extends "base.html" %}
+{% load serializers %}
+{% load static %}
+
 {% block content %}
-{% for guild in guilds %}
-<div class="container">
-  <p><a href="/servers/{{ guild.id }}">{{ guild.name }}</a></p>
-</div>
-{% endfor %}
+<div id="guilds-main"></div>
+{% endblock %}
+
+{% block js %}
+{{ guilds|serialize|json_script:"guilds" }}
+<script src="{% static 'js/guilds.js' %}"></script>
+<!--temporary fix-->
 {% endblock %}

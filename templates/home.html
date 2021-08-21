@@ -1,6 +1,14 @@
 {% extends "base.html" %}
+{% load static %}
+{% load serializers %}
+
 {% block content %}
 <p><a href="/accounts/login">Login</a></p>
 <p><a href="/accounts/logout">Logout</a></p>
 <p><a href="/servers">Server List</a></p>
+{% endblock %}
+
+{% block js %}
+{{ guilds|serialize|json_script:"guilds" }}
+<script src="{% static 'js/index.js' %}"></script>
 {% endblock %}

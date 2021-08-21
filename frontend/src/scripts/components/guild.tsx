@@ -23,6 +23,22 @@ const _Guild: FunctionComponent<GuildProps> = ({id, name}: GuildProps) => {
   );
 };
 
+export interface GuildPreviewProps {
+  name: string;
+  icon: string;
+  guild_id: string;
+}
+
+export const GuildPreview: FunctionComponent<GuildPreviewProps> = ({name, icon, guild_id}: GuildPreviewProps) => {
+  return (
+    <>
+      <h2>{name}</h2>
+      <p>{icon}</p>
+      <p>{guild_id}</p>
+    </>
+  );
+};
+
 export const Guild: FunctionComponent<{}> = () => {
   let _guild = parse_object<GuildProps>('guild');
   return (

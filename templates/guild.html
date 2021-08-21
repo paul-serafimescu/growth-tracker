@@ -9,6 +9,6 @@
 
 {% block js %}
 {{ guild|serialize|json_script:"guild" }}
-{{ guilds|json_script:"guilds" }}
+{{ guilds|serialize|json_script:"guilds" }}
 <script src="{% static 'js/guild.js' %}"></script>
 {% endblock %}

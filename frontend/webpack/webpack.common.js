@@ -1,12 +1,13 @@
 const Path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+// const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: {
-    index: Path.resolve(__dirname, '../src/scripts/index.tsx'),
-    guild: Path.resolve(__dirname, '../src/scripts/guild.tsx'),
+    index: Path.resolve(__dirname, '../src/scripts/pages/index.tsx'),
+    guild: Path.resolve(__dirname, '../src/scripts/pages/guild.tsx'),
+    guilds: Path.resolve(__dirname, '../src/scripts/pages/guilds.tsx'),
   },
   output: {
     path: Path.join(__dirname, '../build'),
@@ -21,9 +22,9 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new CopyWebpackPlugin({ patterns: [{ from: Path.resolve(__dirname, '../public'), to: 'public' }] }),
-    new HtmlWebpackPlugin({
+    /* new HtmlWebpackPlugin({
       template: Path.resolve(__dirname, '../src/index.html'),
-    }),
+    }), */
   ],
   resolve: {
     alias: {
