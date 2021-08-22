@@ -25,6 +25,7 @@ module.exports = merge(common, {
       files: Path.join('src', '**/*.s?(a|c)ss'),
     }),
     new MiniCssExtractPlugin({ filename: 'css/app.css', }),
+    new Webpack.SourceMapDevToolPlugin({})
   ],
   module: {
     rules: [
@@ -40,6 +41,7 @@ module.exports = merge(common, {
       {
         test: /\.js$/,
         include: Path.resolve(__dirname, '../src'),
+        // use: ['source-map-loader', 'babel-loader'],
         loader: 'babel-loader',
       },
       {

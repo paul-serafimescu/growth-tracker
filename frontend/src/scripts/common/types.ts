@@ -11,4 +11,6 @@ export interface User {
   id: number;
   username: string;
   discord_id: string;
+  avatar: string;
+  discriminator: string;
 }

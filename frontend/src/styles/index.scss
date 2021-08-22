@@ -3,5 +3,30 @@
 @import "~bootswatch/dist/darkly/bootswatch";
 
 body {
-  padding-top: $navbar-padding-y + $nav-link-height + $navbar-padding-y;
+  padding-top: $navbar-padding-y + $nav-link-height + $navbar-padding-y + 1;
+}
+
+.icon-main {
+  border-radius: 500px;
+  -webkit-border-radius: 500px;
+  -moz-border-radius: 500px;
+  border: 7px solid #375a7f;
+  background-color: black;
+}
+
+.avatar-name {
+  display: inline-block;
+  margin-left: 20px;
+}
+
+@media only screen and (max-width: 600px) {
+  .avatar-name {
+    margin-left: 15px;
+  }
+}
+
+.descriptor {
+  display: inline-block;
+  font-weight: bold;
+  color: #04d9ff;
 }

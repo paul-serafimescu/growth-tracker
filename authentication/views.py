@@ -91,6 +91,10 @@ class Authenticated(View):
       raise InvalidResponseError
     if (email := user_info.get('email')) is None:
       raise InvalidResponseError()
+    if (discriminator := user_info.get('discriminator')) is None:
+      raise InvalidResponseError()
+    if (avatar := user_info.get('avatar')) is None:
+      raise InvalidResponseError()
     refresh_token = parser.get_or_raise('refresh_token')
     while (user := authenticate(request, username=f'{username} <{id}>', password=id)) is None: # user does not exist
       DiscordUser.objects.create_user(
@@ -100,7 +104,9 @@ class Authenticated(View):
         access_token=access_token,
         token_type=token_type,
         expiration=expiration,
-        refresh_token=refresh_token
+        refresh_token=refresh_token,
+        discriminator=discriminator,
+        avatar=avatar,
       )
     else: # user exists already, update token info
       user = authenticate(request, username=f'{username} <{id}>', password=str(id))
@@ -109,6 +115,8 @@ class Authenticated(View):
       user.expiration = expiration
       user.token_type = token_type
       user.email = email
+      user.avatar = avatar
+      user.discriminator = discriminator
       user.save()
     login(request, user)
     for guild in GuildManager(request.user.access_token).get_user_guilds():

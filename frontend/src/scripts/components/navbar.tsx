@@ -34,7 +34,11 @@ export const NavBar: FunctionComponent<NavBarProps> = ({user, logged_in, guilds}
           </Navbar.Collapse>
           <Navbar.Collapse className="justify-content-end">
             {logged_in ? <Navbar.Text>
-              Signed in as: <a href="/">{user.username}</a>
+              Signed in as: <a href="/">{user.username}#{user.discriminator}</a>
+              <img
+                src={`https://cdn.discordapp.com/avatars/${user.discord_id}/${user.avatar}.${user.avatar.startsWith("a_") ? "gif" : "png"}?size=32`}
+                alt="icon"
+              />
             </Navbar.Text> :
             <Navbar.Text><a href="/">Login</a></Navbar.Text>}
           </Navbar.Collapse>

@@ -34,6 +34,8 @@ class DiscordUser(AbstractUser):
   )
   expiration = models.DateTimeField()
   refresh_token = models.CharField(max_length=100)
+  avatar = models.CharField(max_length=40, null=True)
+  discriminator = models.CharField(max_length=4, default='0001')
 
   def __str__(self) -> str:
     return self.username
@@ -49,7 +51,9 @@ class DiscordUser(AbstractUser):
     return {
       'id': self.id,
       'username': (split_username := self.username.split())[0],
-      'discord_id': split_username[1][1:-1]
+      'discord_id': split_username[1][1:-1],
+      'avatar':  self.avatar,
+      'discriminator': self.discriminator,
     }
 
   class Meta:

@@ -57,7 +57,11 @@ class Database(metaclass=DatabaseMeta):
   def remove_guild_member(self, guild_id: str) -> int:
     return Guild.objects.get(guild_id=guild_id).decrement_member_count()
 
-
   @sync_to_async
   def get_last_days(self, guild_id: str, days: int) -> list[Snapshot]:
     return list(Snapshot.objects.filter(guild__guild_id=guild_id, date__gte=timezone.now() - timezone.timedelta(days=days)))
+
+  @sync_to_async
+  def rename_guild(self, guild_id: str, name_after: str) -> None:
+    (guild := Guild.objects.get(guild_id=guild_id)).name = name_after
+    guild.save()

@@ -40,6 +40,11 @@ class GrowthTracker(discord.Client):
     _guild.members = guild.member_count
     await _guild.async_save()
 
+  async def on_guild_update(self, before: discord.Guild, after: discord.Guild) -> None:
+    if before.name == after.name:
+      return
+    await self.database.rename_guild(str(after.id), after.name)
+
   async def on_member_remove(self, member: discord.Member) -> None:
     await self.database.remove_guild_member(str(member.guild.id))
 

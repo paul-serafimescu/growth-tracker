@@ -13,7 +13,8 @@ let all_guilds = parse_object<Guild[]>('guilds');
 
 /* page DOM rendering */
 Object.entries<JSX.Element>({
-  'navbar': <Components.NavBar user={session_user} logged_in={logged_in} guilds={all_guilds} />
+  'navbar': <Components.NavBar user={session_user} logged_in={logged_in} guilds={all_guilds} />,
+  'home-page': <Components.Index user={session_user} />,
 }).forEach(([key, value]) => {
   ReactDOM.render(
     <React.StrictMode>{value}</React.StrictMode>,
