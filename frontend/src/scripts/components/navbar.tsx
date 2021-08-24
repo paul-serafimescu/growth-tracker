@@ -36,6 +36,7 @@ export const NavBar: FunctionComponent<NavBarProps> = ({user, logged_in, guilds}
             {logged_in ? <Navbar.Text>
               Signed in as: <a href="/">{user.username}#{user.discriminator}</a>
               <img
+                className="icon-navbar"
                 src={`https://cdn.discordapp.com/avatars/${user.discord_id}/${user.avatar}.${user.avatar.startsWith("a_") ? "gif" : "png"}?size=32`}
                 alt="icon"
               />

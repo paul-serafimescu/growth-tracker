@@ -2,31 +2,45 @@
 @import "~bootstrap/scss/bootstrap";
 @import "~bootswatch/dist/darkly/bootswatch";
 
+$round: 500px;
+$center: center;
+$fit: fit-content;
+
 body {
   padding-top: $navbar-padding-y + $nav-link-height + $navbar-padding-y + 1;
 }
 
 .icon-main {
-  border-radius: 500px;
-  -webkit-border-radius: 500px;
-  -moz-border-radius: 500px;
+  border-radius: $round;
+  -webkit-border-radius: $round;
+  -moz-border-radius: $round;
   border: 7px solid #375a7f;
   background-color: black;
 }
 
 .avatar-name {
   display: inline-block;
-  margin-left: 20px;
-}
-
-@media only screen and (max-width: 600px) {
-  .avatar-name {
-    margin-left: 15px;
-  }
 }
 
 .descriptor {
-  display: inline-block;
+  display: inline;
   font-weight: bold;
   color: #04d9ff;
+}
+
+.icon-navbar {
+  margin-left: 5px;
+  border-radius: $round;
+}
+
+.faint-subtitle {
+  color: #91acc9;
+}
+
+.fit-content {
+  width: $fit;
+}
+
+.float-right {
+  float: right;
 }

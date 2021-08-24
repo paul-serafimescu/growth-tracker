@@ -41,7 +41,7 @@ class Logout(View):
   def get(self, request: HttpRequest) -> HttpResponse:
     if request.user.is_authenticated:
       logout(request)
-    return HttpResponse('logged out')
+    return HttpResponse('<p>logged out</p><p><a href="/">Login</a></p>')
 
 class Authenticated(View):
 
