@@ -6,7 +6,7 @@ import * as Types from '../common/types';
 import * as Components from './index';
 
 export interface GuildsProps {
-  guilds: Types.Guild[];
+  readonly guilds: Types.Guild[];
 }
 
 export const Guilds: FunctionComponent<GuildsProps> = ({guilds}: GuildsProps) => {

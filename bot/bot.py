@@ -25,6 +25,9 @@ class GrowthTracker(discord.Client):
       await existing_guild.async_save()
     print(f'{self.user} is running...')
 
+  async def on_message(self, message: discord.Message) -> None:
+    pass
+
   async def on_member_join(self, member: discord.Member) -> None:
     await self.database.add_guild_member(str(member.guild.id))
 

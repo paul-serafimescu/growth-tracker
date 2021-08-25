@@ -39,8 +39,8 @@ export const GuildPreview: FunctionComponent<GuildPreviewProps> = ({name, icon, 
   );
 };
 
-export const Guild: FunctionComponent<{}> = () => {
-  let _guild = parse_object<GuildProps>('guild');
+export const Guild: FunctionComponent<Record<string, unknown>> = () => {
+  const _guild = parse_object<GuildProps>('guild');
   return (
     <Container>
       <Row>

@@ -1,5 +1,7 @@
 import React, {
   FunctionComponent,
+  useState,
+  useEffect,
 } from 'react';
 
 import {
@@ -9,15 +11,34 @@ import {
 import * as Types from '../common/types';
 
 export interface NavBarProps {
-  user: Types.User;
-  logged_in: boolean;
-  guilds: Types.Guild[];
+  readonly user: Types.User;
+  readonly logged_in: boolean;
+  readonly guilds: Types.Guild[];
 }
 
 export const NavBar: FunctionComponent<NavBarProps> = ({user, logged_in, guilds}: NavBarProps) => {
-  return (
+  const [display, setDisplay] = useState(true);
+  const [height, setHeight] = useState<number | undefined>(undefined);
+
+  const onScroll: EventListener =  (event: Event): void => {
+    event.preventDefault();
+    if (!height) return;
+    setDisplay(window.scrollY <= height);
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', onScroll);
+    const nav = document.getElementsByTagName('nav')?.item(0);
+    if (!nav) {
+      return;
+    } else {
+      setHeight(nav.clientHeight * 2);
+    }
+  });
+
+  return display ? (
     <Container>
-      <Navbar className="navbar-main" collapseOnSelect fixed="top" expand="sm" bg="primary" variant="dark">
+      <Navbar id="navbar" className="navbar-main" collapseOnSelect fixed="top" expand="sm" bg="primary" variant="dark">
         <Container>
           <Navbar.Brand href="/">Growth Tracker</Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -46,7 +67,7 @@ export const NavBar: FunctionComponent<NavBarProps> = ({user, logged_in, guilds}
         </Container>
       </Navbar>
     </Container>
-  );
+  ) : <></>;
 };
 
 export default NavBar;

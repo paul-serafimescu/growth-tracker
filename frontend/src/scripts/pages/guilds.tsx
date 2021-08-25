@@ -12,5 +12,6 @@ const all_guilds = parse_object<Guild[]>('guilds');
 
 const _GuildsListPage = new Page({
   'guilds-main': <Components.Guilds guilds={all_guilds} />,
-  'navbar': <Components.NavBar user={session_user} logged_in={logged_in} guilds={all_guilds} />
+  'navbar': <Components.NavBar user={session_user} logged_in={logged_in} guilds={all_guilds} />,
+  'footer': <Components.Footer test="hi" />,
 });

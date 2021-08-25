@@ -6,6 +6,8 @@ $round: 500px;
 $center: center;
 $fit: fit-content;
 
+$enable-responsive-font-sizes: true;
+
 body {
   padding-top: $navbar-padding-y + $nav-link-height + $navbar-padding-y + 1;
 }
@@ -34,7 +36,7 @@ body {
 }
 
 .faint-subtitle {
-  color: #91acc9;
+  color: #7e7f81;
 }
 
 .fit-content {
@@ -43,4 +45,57 @@ body {
 
 .float-right {
   float: right;
+}
+
+.user-card-body {
+  padding: 10px 10px;
+}
+
+.footer {
+  background-color: #303030;
+  width: 100%;
+}
+
+.list-item-mod {
+  border: none !important;
+  padding: 0 !important;
+  color: #505050;
+  margin: 0 !important;
+}
+
+.list-item-text {
+  font-weight: bold;
+  padding: 5px !important;
+  margin: 0 !important;
+}
+
+.footer-header {
+  color: white;
+  font-weight: bold;
+  margin-top: 10px;
+  padding: 5px;
+}
+
+.align-items-center {
+  text-align: $center;
+}
+
+.about {
+  margin-top: 30px;
+
+  /* background-color: rgb(20, 20, 20); */
+}
+
+.about-title {
+  margin-top: 30vh;
+  margin-bottom: 30vh;
+}
+
+.about-content {
+  padding: 10px;
+}
+
+.mg-10 {
+  margin-left: 10px;
+  margin-right: 10px;
 }
