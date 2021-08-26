@@ -1,19 +1,11 @@
-import React, {
-  FunctionComponent
-} from 'react';
+import * as React from 'react';
 
 import {
-  Container, Row, Col as Column, Image
+  Container, Row, Col as Column, Image, Button
 } from 'react-bootstrap';
 
-import * as Types from '../common/types';
 import { range } from '../common/util';
 import '../../styles/index.scss';
-
-export interface IndexProps {
-  readonly user: Types.User;
-  readonly guilds: Types.Guild[];
-}
 
 export interface UserCardProps {
   readonly avatar: string;
@@ -21,6 +13,10 @@ export interface UserCardProps {
   readonly number_guilds: number;
   readonly username: string;
   readonly discriminator: string;
+}
+
+export interface FullWidthProps {
+  children?: JSX.Element;
 }
 
 export const fetchElementWidth = (id: string): number => {
@@ -31,7 +27,11 @@ export const fetchElementWidth = (id: string): number => {
   return element.clientWidth;
 };
 
-export const UserCard: FunctionComponent<UserCardProps> = (props: UserCardProps) => (
+export const Divider: React.FC = () => <hr className="mt-2 mb-3" />;
+
+export const FullWidth: React.FC<FullWidthProps> = ({children}: FullWidthProps) => <div className="d-grid gap-2">{children}</div>;
+
+export const UserCard: React.FC<UserCardProps> = (props: UserCardProps) => (
   <>
     <Column className="px-1 col-md-auto user-card">
       <div className="float-right user-card-body">
@@ -59,8 +59,7 @@ export const UserCard: FunctionComponent<UserCardProps> = (props: UserCardProps)
   </>
 );
 
-export const Index: FunctionComponent<IndexProps> = ({user, guilds}: IndexProps) => {
-  const invite = "";
+export const Index: React.FC = () => {
   return (
     <>
       <Container>
@@ -69,25 +68,23 @@ export const Index: FunctionComponent<IndexProps> = ({user, guilds}: IndexProps)
             <Container className="about-content">
               <Row className="about-title align-self-center">
                 <Column>
-                  <div className="display-2">A Discord Bot that tracks server growth with ease.</div>
+                  <div className="display-2 bot-title">A Discord Bot that measures server growth with ease.</div>
                 </Column>
               </Row>
-              <hr className="mt-2 mb-3" />
-              <Row>
-                <UserCard
-                  username={user.username}
-                  avatar={user.avatar}
-                  number_guilds={guilds.length}
-                  discord_id={user.discord_id}
-                  discriminator={user.discriminator}
-                />
-              </Row>
-              <Row>
+              <Divider />
+              <div className="links-header">
+                <h4 className="display-5">Helpful Links</h4>
+              </div>
+              <Row className="btn-links">
                 <Column>
-                  hi
+                  <FullWidth>
+                    <Button href="/api" variant="primary" size="lg">API Reference</Button>
+                  </FullWidth>
                 </Column>
                 <Column>
-                  <h4 className="display-7 mg-10"><a href={invite}>Add Growth Tracker</a></h4>
+                  <FullWidth>
+                    <Button href="/commands" variant="primary" size="lg">Commands</Button>
+                  </FullWidth>
                 </Column>
               </Row>
             </Container>

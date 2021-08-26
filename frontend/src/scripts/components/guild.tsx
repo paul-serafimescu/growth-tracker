@@ -1,6 +1,4 @@
-import React, {
-  FunctionComponent
-} from 'react';
+import * as React from 'react';
 import {
   Container, Col as Column, Row
 } from 'react-bootstrap';
@@ -14,7 +12,7 @@ export interface GuildProps {
   name: string,
 }
 
-const _Guild: FunctionComponent<GuildProps> = ({id, name}: GuildProps) => {
+const _Guild: React.FC<GuildProps> = ({id, name}: GuildProps) => {
   return (
     <>
       <h1>{id}</h1>
@@ -29,7 +27,7 @@ export interface GuildPreviewProps {
   guild_id: string;
 }
 
-export const GuildPreview: FunctionComponent<GuildPreviewProps> = ({name, icon, guild_id}: GuildPreviewProps) => {
+export const GuildPreview: React.FC<GuildPreviewProps> = ({name, icon, guild_id}: GuildPreviewProps) => {
   return (
     <>
       <h2>{name}</h2>
@@ -39,7 +37,7 @@ export const GuildPreview: FunctionComponent<GuildPreviewProps> = ({name, icon, 
   );
 };
 
-export const Guild: FunctionComponent<Record<string, unknown>> = () => {
+export const Guild: React.FC<Record<string, unknown>> = () => {
   const _guild = parse_object<GuildProps>('guild');
   return (
     <Container>

@@ -99,3 +99,28 @@ body {
   margin-left: 10px;
   margin-right: 10px;
 }
+
+.logout-btn {
+  background-color: transparent !important;
+  border-color: white !important;
+  margin-left: 7px;
+}
+
+.logout-btn:hover {
+  background-color: white !important;
+  color: #375a7f !important;
+}
+
+.bot-title {
+  line-height: 140%;
+}
+
+.btn-links {
+  margin-top: 50px;
+  margin-bottom: 100px;
+}
+
+.links-header {
+  margin-top: 100px;
+  text-align: left;
+}

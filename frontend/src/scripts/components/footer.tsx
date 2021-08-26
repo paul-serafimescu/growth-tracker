@@ -9,17 +9,26 @@ export interface FooterProps {
   [link: string]: string | number;
 }
 
-export const Footer: React.FunctionComponent<FooterProps> = (props: FooterProps) => {
+export const Footer: React.FC<FooterProps> = (props: FooterProps) => {
   return (
     <div className="footer">
       <Container>
         <Row>
-          <h4 className="footer-header"></h4>
           <Col className="d-none d-lg-block">
             <div></div>
           </Col>
           <Col>
             <p className="footer-header">GROWTH TRACKER</p>
+          </Col>
+          <Col>
+            <p className="footer-header">MISCELLANEOUS</p>
+          </Col>
+        </Row>
+        <Row>
+          <Col className="d-none d-lg-block">
+            <div></div>
+          </Col>
+          <Col>
             <ListGroup variant="flush">
               {[...range(0, 5)].map((_, idx) => (
                 <ListGroup.Item key={idx} className="list-item-mod">
@@ -29,7 +38,6 @@ export const Footer: React.FunctionComponent<FooterProps> = (props: FooterProps)
             </ListGroup>
           </Col>
           <Col>
-            <h4 className="footer-header"></h4>
             <ListGroup variant="flush">
               {[...range(0, 5)].map((_, idx) => (
                 <ListGroup.Item key={idx} className="list-item-mod">

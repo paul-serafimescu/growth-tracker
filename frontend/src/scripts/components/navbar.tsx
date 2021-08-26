@@ -1,5 +1,4 @@
 import React, {
-  FunctionComponent,
   useState,
   useEffect,
 } from 'react';
@@ -16,7 +15,7 @@ export interface NavBarProps {
   readonly guilds: Types.Guild[];
 }
 
-export const NavBar: FunctionComponent<NavBarProps> = ({user, logged_in, guilds}: NavBarProps) => {
+export const NavBar: React.FC<NavBarProps> = ({user, logged_in, guilds}: NavBarProps) => {
   const [display, setDisplay] = useState(true);
   const [height, setHeight] = useState<number | undefined>(undefined);
 
@@ -36,21 +35,25 @@ export const NavBar: FunctionComponent<NavBarProps> = ({user, logged_in, guilds}
     }
   });
 
+  const inviteLink = "";
+
   return display ? (
     <Container>
-      <Navbar id="navbar" className="navbar-main" collapseOnSelect fixed="top" expand="sm" bg="primary" variant="dark">
+      <Navbar id="navbar" className="navbar-main" collapseOnSelect fixed="top" expand="lg" bg="primary" variant="dark">
         <Container>
           <Navbar.Brand href="/">Growth Tracker</Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav fill variant="pills" defaultActiveKey="/">
               <Nav.Link className="navbar-item" href="/servers">Guild List</Nav.Link>
+              <Nav.Link className="navbar-item" href="/accounts/logout">Join Support Discord</Nav.Link>
+              <Nav.Link className="navbar-item" href="/accounts/logout">Status</Nav.Link>
+              <Nav.Link className="navbar-item" href={inviteLink}>Invite</Nav.Link>
               <NavDropdown title="Quick Access" id="navbarScrollingDropdown">
                 {guilds.map((guild, idx) => (
                   <NavDropdown.Item key={idx} href={`/servers/${guild.guild_id}`}>{guild.name}</NavDropdown.Item>
                 ))}
               </NavDropdown>
-              <Nav.Link className="navbar-item" href="/accounts/logout">Logout</Nav.Link>
             </Nav>
           </Navbar.Collapse>
           <Navbar.Collapse className="justify-content-end">
@@ -61,6 +64,9 @@ export const NavBar: FunctionComponent<NavBarProps> = ({user, logged_in, guilds}
                 src={`https://cdn.discordapp.com/avatars/${user.discord_id}/${user.avatar}.${user.avatar.startsWith("a_") ? "gif" : "png"}?size=32`}
                 alt="icon"
               />
+              <a className="btn btn-info logout-btn justify-content-end" href="accounts/logout">
+                <i className="icon fa">&#xf08b;</i>
+              </a>
             </Navbar.Text> :
             <Navbar.Text><a href="/">Login</a></Navbar.Text>}
           </Navbar.Collapse>

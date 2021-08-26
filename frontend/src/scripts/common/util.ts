@@ -15,5 +15,5 @@ export function parse_object<T = unknown>(id: string): T {
 }
 
 export function* range(start: number, end: number, step = 1): Generator<number, void, boolean | undefined> {
-  for (let i = start - step; i < end - step; yield (i += step));
+  for (let i = start; (yield* (function* (x) { yield x; return x; })(i)) < end - step; i += step);
 }
