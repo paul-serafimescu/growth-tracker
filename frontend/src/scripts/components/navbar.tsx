@@ -28,9 +28,7 @@ export const NavBar: React.FC<NavBarProps> = ({user, logged_in, guilds}: NavBarP
   useEffect(() => {
     window.addEventListener('scroll', onScroll);
     const nav = document.getElementsByTagName('nav')?.item(0);
-    if (!nav) {
-      return;
-    } else {
+    if (nav) {
       setHeight(nav.clientHeight * 2);
     }
   });
@@ -46,8 +44,8 @@ export const NavBar: React.FC<NavBarProps> = ({user, logged_in, guilds}: NavBarP
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav fill variant="pills" defaultActiveKey="/">
               <Nav.Link className="navbar-item" href="/servers">Guild List</Nav.Link>
-              <Nav.Link className="navbar-item" href="/accounts/logout">Join Support Discord</Nav.Link>
-              <Nav.Link className="navbar-item" href="/accounts/logout">Status</Nav.Link>
+              <Nav.Link className="navbar-item" href="">Join Support Discord</Nav.Link>
+              <Nav.Link className="navbar-item" href="">Status</Nav.Link>
               <Nav.Link className="navbar-item" href={inviteLink}>Invite</Nav.Link>
               <NavDropdown title="Quick Access" id="navbarScrollingDropdown">
                 {guilds.map((guild, idx) => (
@@ -73,7 +71,7 @@ export const NavBar: React.FC<NavBarProps> = ({user, logged_in, guilds}: NavBarP
         </Container>
       </Navbar>
     </Container>
-  ) : <></>;
+  ) : null;
 };
 
 export default NavBar;

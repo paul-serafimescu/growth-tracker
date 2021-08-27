@@ -3,19 +3,15 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Container from 'react-bootstrap/Container';
-import { range } from '../common';
+import Image from 'react-bootstrap/Image';
 
-export interface FooterProps {
-  [link: string]: string | number;
-}
-
-export const Footer: React.FC<FooterProps> = (props: FooterProps) => {
+export const Footer: React.FC = () => {
   return (
     <div className="footer">
       <Container>
         <Row>
           <Col className="d-none d-lg-block">
-            <div></div>
+            <p className="footer-header"></p>
           </Col>
           <Col>
             <p className="footer-header">GROWTH TRACKER</p>
@@ -26,22 +22,55 @@ export const Footer: React.FC<FooterProps> = (props: FooterProps) => {
         </Row>
         <Row>
           <Col className="d-none d-lg-block">
-            <div></div>
+            <Row className="gt-logo">
+              <Col>
+                <Image src="https://via.placeholder.com/100" width="100" height="100" />
+              </Col>
+            </Row>
+            <Row>
+              <small className="social-header">GET IN TOUCH</small>
+              {[
+                ['fab fa-discord', 'https://discord.com'], // this should be changed to whatever support server invite
+                ['fab fa-twitter', 'https://twitter.com'], // likewise, with whatever twitter
+                ['fab fa-reddit', 'https://reddit.com'],
+                ['fad fa-envelope-square', 'https://mail.google.com'], // and likewise, with email
+              ].map(([icon, link], idx) => (
+                <Col key={idx} md="auto">
+                  <a className="footer-link" href={link} target="_blank" rel="noreferrer">
+                    <i className={`${icon} social-icon`}></i>
+                  </a>
+                </Col>
+              ))}
+            </Row>
           </Col>
           <Col>
             <ListGroup variant="flush">
-              {[...range(0, 5)].map((_, idx) => (
+              {[
+                ['API', '/api'],
+                ['Help', '/commands'],
+                ['Public Servers', '/public'],
+                ['User Policy', '/policy'],
+              ].map(([text, link], idx) => (
                 <ListGroup.Item key={idx} className="list-item-mod">
-                  <p className="list-item-text">{props.test}</p>
+                  <p className="list-item-text">
+                    <a className="footer-link" href={link} target="_blank" rel="noreferrer">{text}</a>
+                  </p>
                 </ListGroup.Item>
               ))}
             </ListGroup>
           </Col>
           <Col>
             <ListGroup variant="flush">
-              {[...range(0, 5)].map((_, idx) => (
+              {[
+                ['Discord', 'https://discord.com'],
+                ['Discord API Root', 'https://discord.com/api/v8'],
+                ['Discord Developer Docs', 'https://discord.com/developers/docs/intro'],
+                ['discord.py API Docs', 'https://discordpy.readthedocs.io/en/stable/'],
+              ].map(([text, link], idx) => (
                 <ListGroup.Item key={idx} className="list-item-mod">
-                  <p className="list-item-text">{props.test}</p>
+                  <p className="list-item-text">
+                    <a className="footer-link" href={link} target="_blank" rel="noreferrer">{text}</a>
+                  </p>
                 </ListGroup.Item>
               ))}
             </ListGroup>

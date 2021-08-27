@@ -5,6 +5,7 @@
 $round: 500px;
 $center: center;
 $fit: fit-content;
+$footer-color: #585858;
 
 $enable-responsive-font-sizes: true;
 
@@ -52,6 +53,8 @@ body {
 }
 
 .footer {
+  padding-top: 15px;
+  padding-bottom: 30px;
   background-color: #303030;
   width: 100%;
 }
@@ -59,7 +62,7 @@ body {
 .list-item-mod {
   border: none !important;
   padding: 0 !important;
-  color: #505050;
+  color: $footer-color;
   margin: 0 !important;
 }
 
@@ -74,6 +77,11 @@ body {
   font-weight: bold;
   margin-top: 10px;
   padding: 5px;
+}
+
+.footer-link {
+  color: inherit;
+  text-decoration: inherit;
 }
 
 .align-items-center {
@@ -123,4 +131,24 @@ body {
 .links-header {
   margin-top: 100px;
   text-align: left;
+}
+
+.social-icon {
+  font-size: 30px;
+  margin-right: 15px;
+}
+
+.social-icon:hover {
+  color: $teal;
+  cursor: pointer;
+}
+
+.gt-logo {
+  margin-bottom: 30px;
+}
+
+.social-header {
+  color: #7e7f81;
+  font-weight: bold;
+  margin-bottom: 15px;
 }
