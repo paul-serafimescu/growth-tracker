@@ -6,6 +6,7 @@ $round: 500px;
 $center: center;
 $fit: fit-content;
 $footer-color: #585858;
+$footer-bg-color: #303030;
 
 $enable-responsive-font-sizes: true;
 
@@ -55,7 +56,7 @@ body {
 .footer {
   padding-top: 15px;
   padding-bottom: 30px;
-  background-color: #303030;
+  background-color: $footer-bg-color;
   width: 100%;
 }
 
@@ -115,8 +116,8 @@ body {
 }
 
 .logout-btn:hover {
-  background-color: white !important;
-  color: #375a7f !important;
+  background-color: rgb(207, 2, 2) !important;
+  color: white !important;
 }
 
 .bot-title {
@@ -151,4 +152,58 @@ body {
   color: #7e7f81;
   font-weight: bold;
   margin-bottom: 15px;
+}
+
+.inline-card {
+  display: inline-block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.inline-card:hover {
+  color: #fff !important;
+}
+
+.guild-preview {
+  margin: 10px 15px;
+  width: 8rem;
+  background-color: $footer-bg-color !important;
+}
+
+.guild-preview:hover {
+  background-color: #375a7f !important;
+  cursor: pointer;
+}
+
+.guild-body {
+  padding: 2px 5px !important;
+  text-align: $center;
+}
+
+.guild-list-title {
+  text-align: left;
+  margin-left: 20px;
+}
+
+.guild-container {
+  text-align: $center;
+  margin-top: 60px;
+  margin-bottom: 60px;
+}
+
+.card-img-caption {
+  border-top-left-radius: calc(0.25rem - 1px);
+  border-top-right-radius: calc(0.25rem - 1px);
+}
+
+.card-img-caption .card-img-top {
+  z-index: 0;
+}
+
+.card-img-caption .card-text {
+  text-align: center;
+  width: 100%;
+  margin: 33% 0;
+  position: absolute;
+  z-index: 1;
 }

@@ -120,6 +120,18 @@ class Authenticated(View):
       user.save()
     login(request, user)
     for guild in GuildManager(request.user.access_token).get_user_guilds():
-      _guild, _ = Guild.objects.get_or_create(guild_id=guild['id'])
+      try:
+        _guild = Guild.objects.get(guild_id=guild['id'])
+        _guild.permissions = guild['permissions']
+        _guild.icon = guild['icon']
+        _guild.name = guild['name']
+        _guild.save()
+      except:
+        _guild = Guild.objects.create(
+          guild_id=guild['id'],
+          name=guild['name'],
+          permissions=guild['permissions'],
+          icon=guild['icon'],
+        )
       _guild.users.add(request.user)
     return redirect('/')
