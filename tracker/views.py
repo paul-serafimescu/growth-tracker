@@ -1,3 +1,4 @@
+from django.http.response import JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpRequest, HttpResponse, HttpResponseNotFound
 from django.views import View
@@ -70,12 +71,9 @@ class ServerView(View):
     ...
 
 class GraphView(View):
-  pass
-"""
   def get(self, request: HttpRequest, guild_id: str, *args, **kwargs) -> HttpResponse:
     guild = get_object_or_404(Guild, guild_id=guild_id)
-    fig, axes = plt.subplots()
-    plt.plot(WeekDays.days, [0, 0, 0, 0, 0, 5, 8])
-    fig.savefig('test')
-    return HttpResponse(content_type='image/png')"""
+    if not guild.bot_joined:
+      return HttpResponse('bot did not join')
+    return JsonResponse(list(map(lambda snapshot : snapshot.serialize(), guild.snapshot_set.all())), safe=False)
 

@@ -62,7 +62,7 @@ export const NavBar: React.FC<NavBarProps> = ({user, logged_in, guilds}: NavBarP
                 src={`https://cdn.discordapp.com/avatars/${user.discord_id}/${user.avatar}.${user.avatar.startsWith("a_") ? "gif" : "png"}?size=32`}
                 alt="icon"
               />
-              <a className="btn btn-info logout-btn justify-content-end" href="accounts/logout">
+              <a className="btn btn-info logout-btn justify-content-end" href="/accounts/logout">
                 <i className="icon fa">&#xf08b;</i>
               </a>
             </Navbar.Text> :

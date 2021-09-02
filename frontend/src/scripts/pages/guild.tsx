@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 
-import "../../styles/index.scss";
+import '../../styles/index.scss';
 import * as Components from '../components';
 import { parse_object, User, Guild, Page } from '../common';
 

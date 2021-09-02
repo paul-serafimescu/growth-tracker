@@ -50,8 +50,8 @@ class DiscordUser(AbstractUser):
   def serialize(self) -> dict[str, Any]:
     return {
       'id': self.id,
-      'username': (split_username := self.username.split())[0],
-      'discord_id': split_username[1][1:-1],
+      'username': ' '.join((split_username := self.username.split())[:-1]),
+      'discord_id': split_username[-1][1:-1],
       'avatar':  self.avatar,
       'discriminator': self.discriminator,
     }
@@ -64,9 +64,9 @@ class Guild(models.Model):
   name = models.CharField(max_length=100)
   guild_id = models.CharField(max_length=30, unique=True)
   icon = models.CharField(max_length=100, null=True)
-  permissions = models.CharField(max_length=30)
   members = models.IntegerField(null=True)
   users = models.ManyToManyField(DiscordUser)
+  bot_joined = models.BooleanField(default=False)
 
   def __str__(self) -> str:
     return self.name
@@ -93,6 +93,11 @@ class Guild(models.Model):
 
   @sync_to_async
   def async_save(self) -> None:
+    self.save()
+
+  @sync_to_async
+  def leave(self) -> None:
+    self.bot_joined = False
     self.save()
 
   class Meta:

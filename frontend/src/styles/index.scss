@@ -207,3 +207,38 @@ body {
   position: absolute;
   z-index: 1;
 }
+
+.empty-guild-list-msg {
+  margin-top: 80px;
+  margin-bottom: 100px;
+}
+
+.mgt-50 {
+  margin-top: 50px;
+}
+
+.guild-view-default {
+  h2 {
+    margin-top: 60px;
+  }
+
+  h3 {
+    margin-top: 20px;
+  }
+
+  .invite-link:hover {
+    color: #375a7f !important;
+  }
+
+  min-height: calc(55vh);
+}
+
+.guild-image {
+  margin-top: 60px;
+  margin-bottom: 30px;
+  border-radius: 25%;
+}
+
+.loading-spinner {
+  margin-top: 30%;
+}
