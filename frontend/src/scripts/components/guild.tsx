@@ -5,23 +5,22 @@ import {
   Spinner
 } from 'react-bootstrap';
 
-import {
-  parse_object
-} from '../common';
+import parse_object from '../common/util';
 
 export interface GuildProps {
-  id: number,
-  name: string,
-  bot_joined: boolean,
-  members: number | null,
-  icon: string | null,
-  guild_id: string,
+  readonly id: number,
+  readonly name: string,
+  readonly bot_joined: boolean,
+  readonly members: number | null,
+  readonly icon: string | null,
+  readonly guild_id: string,
+  readonly created: string,
 }
 
 export interface GuildPreviewProps {
-  name: string;
-  icon: string | null;
-  guild_id: string;
+  readonly name: string;
+  readonly icon: string | null;
+  readonly guild_id: string;
 }
 
 export enum IconType {
@@ -29,37 +28,37 @@ export enum IconType {
 }
 
 export class Icon {
-  type: IconType;
-  #url: string | undefined;
-  #name: string;
+  public readonly type: IconType;
+  private readonly _url: string | undefined;
+  private readonly _name: string;
 
   constructor(icon: string | null, name: string, guild_id: string) {
     switch (typeof icon) {
       case "string":
         this.type = IconType.Exists;
-        this.#url = `https://cdn.discordapp.com/icons/${guild_id}/${icon}.png`;
+        this._url = `https://cdn.discordapp.com/icons/${guild_id}/${icon}.png`;
         break;
       default:
         this.type = IconType.Blank;
     }
-    this.#name = name;
+    this._name = name;
   }
 
-  url = (large = false): string => (this.#url ?? "https://upload.wikimedia.org/wikipedia/commons/8/89/HD_transparent_picture.png") + (large ? "?size=4096" : "");
+  public url = (large = false): string => (this._url ?? "https://upload.wikimedia.org/wikipedia/commons/8/89/HD_transparent_picture.png") + (large ? "?size=4096" : "");
 
-  renderCard = (props: CardImgProps, onHover: React.MouseEventHandler): JSX.Element => {
+  public renderCard = (props: CardImgProps, onHover: React.MouseEventHandler): JSX.Element => {
     return (
       <div className="card-img-caption">
-        {!this.#url && <h2 className="card-text">{this.#name.split(/\s+/).map(element => element[0])}</h2>}
+        {!this._url && <h2 className="card-text">{this._name.split(/\s+/).map(element => element[0])}</h2>}
         <Card.Img {...props} onMouseEnter={onHover} onMouseLeave={onHover} />
       </div>
     );
   }
 
-  renderImage = (props: ImageProps): JSX.Element => {
+  public renderImage = (props: ImageProps): JSX.Element => {
     return (
       <div className="card-img-caption">
-        {!this.#url && <h2 className="card-text">{this.#name.split(/\s+/).map(element => element[0])}</h2>}
+        {!this._url && <h2 className="card-text">{this._name.split(/\s+/).map(element => element[0])}</h2>}
         <Image id="guild-image" className="guild-image" {...props} />
       </div>
     );
@@ -114,13 +113,16 @@ export const Guild: React.FC = () => {
 
   const invite = "";
 
-  const GuildJoinedView: React.FC<GuildProps> = ({id, name, members}: GuildProps) => {
+  const GuildJoinedView: React.FC<GuildProps> = ({guild_id, members, created}: GuildProps) => {
     return (
-      <>
-        <h1>{id}</h1>
-        <h1>{name}</h1>
-        <h1>{String(members)}</h1>
-      </>
+      <Container className="guild-view">
+        <ul>
+          <li><p className="display-6">Member count: {members}</p></li>
+          <li><p className="display-6">Tracking since: {new Date(created).toLocaleDateString()}</p></li>
+          <li><a href={`/servers/${guild_id}/graph`} className="display-6">See graph</a></li>
+          {/* TODO: any other basic metadata or statistics which can be computed from basic properties */}
+        </ul>
+      </Container>
     );
   };
 

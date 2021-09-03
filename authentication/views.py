@@ -85,16 +85,12 @@ class Authenticated(View):
       (access_token := parser.get_or_raise('access_token'))
     )
     expiration = timezone.now() + timezone.timedelta(0, parser.get_or_raise('expires_in'))
-    if (id := user_info.get('id')) is None:
-      raise InvalidResponseError()
-    if (username := user_info.get('username')) is None:
-      raise InvalidResponseError
-    if (email := user_info.get('email')) is None:
-      raise InvalidResponseError()
-    if (discriminator := user_info.get('discriminator')) is None:
-      raise InvalidResponseError()
-    if (avatar := user_info.get('avatar')) is None:
-      raise InvalidResponseError()
+    if (id := user_info.get('id')) is None \
+      or (username := user_info.get('username')) is None \
+      or (email := user_info.get('email')) is None \
+      or (discriminator := user_info.get('discriminator')) is None \
+      or (avatar := user_info.get('avatar')) is None:
+        raise InvalidResponseError()
     refresh_token = parser.get_or_raise('refresh_token')
     while (user := authenticate(request, username=f'{username} <{id}>', password=id)) is None: # user does not exist
       DiscordUser.objects.create_user(

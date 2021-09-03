@@ -233,6 +233,37 @@ body {
   min-height: calc(55vh);
 }
 
+.guild-view {
+  ul {
+    list-style-type: none;
+    height: 100%;
+    padding: 12px;
+
+    li {
+      margin-bottom: 30px;
+
+      a {
+        color: $light;
+      }
+
+      a:hover {
+        color: $cyan;
+      }
+    }
+  }
+
+  p {
+    display: block;
+    padding: 0;
+  }
+
+  height: 70%;
+  padding: 5px 20px;
+  margin-top: 60px;
+  background-color: rgb(44, 44, 44);
+  border-radius: 2%;
+}
+
 .guild-image {
   margin-top: 60px;
   margin-bottom: 30px;
@@ -241,4 +272,11 @@ body {
 
 .loading-spinner {
   margin-top: 30%;
+}
+
+.place-bottom {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }

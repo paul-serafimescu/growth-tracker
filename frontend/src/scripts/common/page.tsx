@@ -2,7 +2,7 @@ import * as React from 'react';
 import ReactDOM from 'react-dom';
 
 export interface PageProps {
-  [key: string]: JSX.Element | string;
+  readonly [key: string]: JSX.Element | string;
 }
 
 export class Page<T extends PageProps> {

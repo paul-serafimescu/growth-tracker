@@ -67,6 +67,7 @@ class Guild(models.Model):
   members = models.IntegerField(null=True)
   users = models.ManyToManyField(DiscordUser)
   bot_joined = models.BooleanField(default=False)
+  created = models.DateTimeField(auto_now_add=True)
 
   def __str__(self) -> str:
     return self.name
