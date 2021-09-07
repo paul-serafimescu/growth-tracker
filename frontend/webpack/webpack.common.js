@@ -8,6 +8,7 @@ module.exports = {
     index: Path.resolve(__dirname, '../src/scripts/pages/index.tsx'),
     guild: Path.resolve(__dirname, '../src/scripts/pages/guild.tsx'),
     guilds: Path.resolve(__dirname, '../src/scripts/pages/guilds.tsx'),
+    graph: Path.resolve(__dirname, '../src/scripts/pages/graph.tsx'),
   },
   output: {
     path: Path.join(__dirname, '../build'),

@@ -58,7 +58,6 @@ export class Icon {
   public renderImage = (props: ImageProps): JSX.Element => {
     return (
       <div className="card-img-caption">
-        {!this._url && <h2 className="card-text">{this._name.split(/\s+/).map(element => element[0])}</h2>}
         <Image id="guild-image" className="guild-image" {...props} />
       </div>
     );

@@ -2,6 +2,7 @@ import discord
 from database import Database
 from database.base import Guild
 from config.environment import ENV
+from django.utils import timezone
 from typing import Union
 
 class GrowthTracker(discord.Client):
@@ -30,9 +31,10 @@ class GrowthTracker(discord.Client):
     pass
 
   async def on_member_join(self, member: discord.Member) -> None:
-    await self.database.add_guild_member(str(member.guild.id))
+    await self.database.add_guild_member(str(member.guild.id), member.guild.member_count)
 
   async def on_guild_join(self, guild: discord.Guild) -> None:
+    # if guild id doesn't exist, create a new entry
     if (_guild := await self.__corresponding_db_guild(guild.id)) is None:
       return await Guild(
         name=guild.name,
@@ -42,7 +44,10 @@ class GrowthTracker(discord.Client):
         members=guild.member_count,
         bot_joined=True,
       ).async_save()
+    # if guild already exists in the database, reactivate it
     _guild.members = guild.member_count
+    _guild.bot_joined = True
+    _guild.created = timezone.now()
     await _guild.async_save()
 
   async def on_guild_remove(self, guild: discord.Guild) -> None:
@@ -56,7 +61,7 @@ class GrowthTracker(discord.Client):
     await self.database.rename_guild(str(after.id), after.name)
 
   async def on_member_remove(self, member: discord.Member) -> None:
-    await self.database.remove_guild_member(str(member.guild.id))
+    await self.database.remove_guild_member(str(member.guild.id), member.guild.member_count)
 
   def run(self) -> None:
     super().run(ENV.get('BOT_TOKEN'))

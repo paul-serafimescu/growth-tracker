@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from config.environment import BASE_PATH
 from asgiref.sync import sync_to_async
-from typing import Any
+from typing import Any, Optional
 
 def serializable(cls: type):
   def serialize(self) -> dict[str, Any]:
@@ -19,7 +19,7 @@ def serializable(cls: type):
 class DiscordUser(AbstractUser):
   """ This user model is derived from the Discord OAuth 2.0 user object.
 
-      The `username` field should be populated by Discord id, `password` field should be populated by `hash(id)`.
+      The `username` field should be populated by Discord id, `password` field should be populated by `hash(username)`.
   """
 
   class TokenType(models.TextChoices):
@@ -76,18 +76,24 @@ class Guild(models.Model):
   def create_guild(*args, **kwargs) -> Guild:
     return Guild.objects.create(**kwargs)
 
-  def increment_member_count(self) -> int:
+  def increment_member_count(self, members: Optional[int]) -> int:
     if self.members is None:
       return
-    self.members += 1
+    if members is not None:
+      self.members = members
+    else:
+      self.members += 1
     self.save()
     Snapshot.objects.create(guild=self, member_count=self.members)
     return self.members
 
-  def decrement_member_count(self) -> int:
+  def decrement_member_count(self, members: Optional[int]) -> int:
     if self.members is None:
       return
-    self.members -= 1
+    if members is not None:
+      self.members = members
+    else:
+      self.members -= 1
     self.save()
     Snapshot.objects.create(guild=self, member_count=self.members)
     return self.members

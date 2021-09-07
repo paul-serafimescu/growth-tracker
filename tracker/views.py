@@ -4,7 +4,7 @@ from django.http import HttpRequest, HttpResponse, HttpResponseNotFound
 from django.views import View
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
-from .middleware import protected_route
+from .middleware import protected_route, bot_joined
 from .models import Guild, Snapshot
 
 class WeekDaysMeta(type):
@@ -71,9 +71,11 @@ class ServerView(View):
     ...
 
 class GraphView(View):
-  def get(self, request: HttpRequest, guild_id: str, *args, **kwargs) -> HttpResponse:
-    guild = get_object_or_404(Guild, guild_id=guild_id)
-    if not guild.bot_joined:
-      return HttpResponse('bot did not join')
-    return JsonResponse(list(map(lambda snapshot : snapshot.serialize(), guild.snapshot_set.all())), safe=False)
+  @bot_joined
+  def get(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
+    context = {
+      'guild': request.guild,
+      'guilds': list(request.user.guild_set.all()),
+    }
+    return render(request, 'graph.html', context)
 

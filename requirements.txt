@@ -9,3 +9,4 @@ python-dotenv==0.18.0
 apscheduler==3.7.0
 aenum==3.1.0
 Pillow==8.3.1
+djangorestframework==3.12.4

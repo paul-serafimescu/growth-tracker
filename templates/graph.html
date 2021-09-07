@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load serializers %}
+
+{% block content %}
+<div id="graph-root"></div>
+{% endblock %}
+
+{% block js %}
+{{ guilds|serialize|json_script:"guilds" }}
+{{ guild|serialize|json_script:"guild" }}
+<script src="{% static 'js/graph.js' %}"></script>
+{% endblock %}

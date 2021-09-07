@@ -2,7 +2,7 @@ from asgiref.sync import sync_to_async
 from .exceptions import ConnectionError
 from config.environment import BASE_PATH
 from django.utils import timezone
-from typing import Union
+from typing import Union, Optional
 
 import os
 import django
@@ -50,12 +50,12 @@ class Database(metaclass=DatabaseMeta):
       return None
 
   @sync_to_async
-  def add_guild_member(self, guild_id: str) -> int:
-    return Guild.objects.get(guild_id=guild_id).increment_member_count()
+  def add_guild_member(self, guild_id: str, members: Optional[int]) -> int:
+    return Guild.objects.get(guild_id=guild_id).increment_member_count(members)
 
   @sync_to_async
-  def remove_guild_member(self, guild_id: str) -> int:
-    return Guild.objects.get(guild_id=guild_id).decrement_member_count()
+  def remove_guild_member(self, guild_id: str, members: Optional[int]) -> int:
+    return Guild.objects.get(guild_id=guild_id).decrement_member_count(members)
 
   @sync_to_async
   def get_last_days(self, guild_id: str, days: int) -> list[Snapshot]:

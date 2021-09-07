@@ -8,7 +8,7 @@ from config.environment import DISCORD_OAUTH_ROOT, DISCORD_API_ROOT, ENV
 from config.exceptions import EnvKeyNotFoundError
 from requests import post, get
 from urllib.parse import quote
-from api.guild import GuildManager
+from discord_utils.guild import GuildManager
 from tracker.models import Guild
 from typing import Union, Any
 from .util import ResponseParser, InvalidResponseError
