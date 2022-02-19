@@ -64,4 +64,4 @@ class GrowthTracker(discord.Client):
     await self.database.remove_guild_member(str(member.guild.id), member.guild.member_count)
 
   def run(self) -> None:
-    super().run(ENV.get('BOT_TOKEN'))
+    super().run(ENV.get('BOT_CLIENT_TOKEN'))
